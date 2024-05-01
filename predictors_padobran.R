@@ -5,7 +5,8 @@ library(reticulate)
 
 # python environment
 # reticulate::use_virtualenv("C:/Users/Mislav/projects_py/pyquant", required = TRUE)
-theftms::init_theft("/opt/venv")
+# theftms::init_theft("/opt/venv")
+reticulate::use_virtualenv("/opt/venv")
 tsfel = reticulate::import("tsfel", convert = FALSE)
 # tsfresh = reticulate::import("tsfresh", convert = FALSE)
 warnigns = reticulate::import("warnings", convert = FALSE)
