@@ -62,42 +62,42 @@ create_path = function(name) {
   file.path(PATH_PREDICTORS, paste0(name, "-", i, ".csv"))
 }
 
-# Exuber
-path_ =   create_path("exuber")
-exuber_init = RollingExuber$new(
-  windows = c(400, 400*2),
-  workers = 4L,
-  at = at,
-  lag = 0L,
-  exuber_lag = 1L
-)
-system.time({
-  exuber = exuber_init$get_rolling_features(ohlcv, TRUE)
-})
-fwrite(exuber, path_)
-
-# Backcusum
-path_ = create_path("backcusum")
-backcusum_init = RollingBackcusum$new(
-  windows = c(200),
-  workers = 4L,
-  at = at,
-  lag = 0L,
-  alternative = c("greater", "two.sided"),
-  return_power = c(1, 2))
-backcusum = backcusum_init$get_rolling_features(ohlcv)
-fwrite(backcusum, path_)
-
-# Theft r
-path_ = create_path("theftr")
-theft_init = RollingTheft$new(
-  windows = 400,
-  workers = 4L,
-  at = at,
-  lag = 0L,
-  features_set = c("catch22", "feasts"))
-theft_r = theft_init$get_rolling_features(ohlcv)
-fwrite(theft_r, path_)
+# # Exuber
+# path_ =   create_path("exuber")
+# exuber_init = RollingExuber$new(
+#   windows = c(400, 400*2),
+#   workers = 4L,
+#   at = at,
+#   lag = 0L,
+#   exuber_lag = 1L
+# )
+# system.time({
+#   exuber = exuber_init$get_rolling_features(ohlcv, TRUE)
+# })
+# fwrite(exuber, path_)
+# 
+# # Backcusum
+# path_ = create_path("backcusum")
+# backcusum_init = RollingBackcusum$new(
+#   windows = c(200),
+#   workers = 4L,
+#   at = at,
+#   lag = 0L,
+#   alternative = c("greater", "two.sided"),
+#   return_power = c(1, 2))
+# backcusum = backcusum_init$get_rolling_features(ohlcv)
+# fwrite(backcusum, path_)
+# 
+# # Theft r
+# path_ = create_path("theftr")
+# theft_init = RollingTheft$new(
+#   windows = 400,
+#   workers = 4L,
+#   at = at,
+#   lag = 0L,
+#   features_set = c("catch22", "feasts"))
+# theft_r = theft_init$get_rolling_features(ohlcv)
+# fwrite(theft_r, path_)
 
 # Theft py
 path_ = create_path("theftpy")
