@@ -1,0 +1,21 @@
+Bootstrap: docker
+From: r-base:4.3.0
+
+%post
+
+  # apt
+  apt update
+  apt install libssl-dev -y
+  apt install libxml2-dev -y
+  apt install libcurl4-openssl-dev -y
+
+  R --slave -e 'install.packages("data.table")'
+  R --slave -e 'install.packages("bit64")'
+  R --slave -e 'install.packages("exuber")'
+  R --slave -e 'install.packages("forecast")'
+  R --slave -e 'install.packages("remotes")'
+  R --slave -e 'remotes::install_github("MislavSag/finfeatures")'
+  R --slave -e 'remotes::install_github("ottosven/backCUSUM")'
+
+%runscript
+  Rscript $@
