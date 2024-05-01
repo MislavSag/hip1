@@ -26,7 +26,32 @@ i = as.integer(Sys.getenv('PBS_ARRAY_INDEX'))
 spy = fread("spy-ohlcv.csv")
 
 # Divide data on 1000 rows
-at_sets = split(1:nrow(spy), ceiling(1:nrow(spy)/1000))
+split_vector_into_chunks <- function(vector, chunks = 1000) {
+  n <- length(vector)
+  
+  # Number of elements in most chunks
+  base_size <- floor(n / chunks)
+  
+  # Calculate how many chunks need one extra element to account for the remainder
+  remainder <- n %% chunks
+  extra_sizes <- ifelse(seq_len(chunks) <= remainder, 1, 0)
+  
+  # Total elements per chunk
+  chunk_sizes <- base_size + extra_sizes
+  
+  # Create the breaks for the chunks
+  breaks <- c(0, cumsum(chunk_sizes))
+  
+  # Split the vector into chunks
+  subsamples <- vector("list", length = chunks)
+  for (i in seq_len(chunks)) {
+    subsamples[[i]] <- vector[length = chunk_sizes[i]]
+    subsamples[[i]] <- vector[(breaks[i] + 1):breaks[i + 1]]
+  }
+  
+  return(subsamples)
+}
+at_sets = split_vector_into_chunks(1:nrow(spy), chunks = 1000)
 at = at_sets[[i]]
 
 # Create Ohlcv object
@@ -38,8 +63,7 @@ create_path = function(name) {
 }
 
 # Exuber
-create_path("exuber")
-path_ = create_path("exuber")
+path_ =   create_path("exuber")
 exuber_init = RollingExuber$new(
   windows = c(400, 400*2),
   workers = 4L,
@@ -74,3 +98,9 @@ theft_init = RollingTheft$new(
   features_set = c("catch22", "feasts"))
 theft_r = theft_init$get_rolling_features(ohlcv)
 fwrite(theft_r, path_)
+
+# Forecast
+
+# Theft py
+
+

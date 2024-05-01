@@ -18,6 +18,7 @@ From: r-base:4.3.0
   R --slave -e 'remotes::install_github("ottosven/backCUSUM")'
   R --slave -e 'remotes::install_github("MislavSag/theftms")'
   # R --slave -e 'install.packages("forecast")'
+  # R --slave -e 'install.packages("forecast")'
   
 
 %runscript
