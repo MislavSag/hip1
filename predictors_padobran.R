@@ -5,6 +5,7 @@ library(reticulate)
 
 # python environment
 # reticulate::use_virtualenv("C:/Users/Mislav/projects_py/pyquant", required = TRUE)
+theftms::init_theft("/opt/venv")
 tsfel = reticulate::import("tsfel", convert = FALSE)
 # tsfresh = reticulate::import("tsfresh", convert = FALSE)
 warnigns = reticulate::import("warnings", convert = FALSE)
@@ -20,7 +21,7 @@ if (!dir.exists(PATH_PREDICTORS)) {
 
 # Get index
 i = as.integer(Sys.getenv('PBS_ARRAY_INDEX'))
-# i = 100
+# i = 25
 
 # Get SPY OHLCV data
 spy = fread("spy-ohlcv.csv")
@@ -100,6 +101,7 @@ create_path = function(name) {
 # fwrite(theft_r, path_)
 
 # Theft py
+print("thet py")
 path_ = create_path("theftpy")
 theft_init = RollingTheft$new(
   windows = 400,
@@ -107,6 +109,6 @@ theft_init = RollingTheft$new(
   at = at,
   lag = 0L,
   features_set = c("tsfel"))
-theft_r = theft_init$get_rolling_features(ohlcv)
-fwrite(theft_r, path_)
+theft_py = suppressMessages(theft_init$get_rolling_features(ohlcv))
+fwrite(theft_py, path_)
 

@@ -3,7 +3,7 @@
 #PBS -N spymlpreds
 #PBS -l ncpus=4
 #PBS -l mem=16GB
-#PBS -J 1-1000
+#PBS -J 1-30
 #PBS -o logs
 #PBS -j oe
 
