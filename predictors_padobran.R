@@ -1,14 +1,14 @@
 library(data.table)
 library(finfeatures)
-# library(reticulate)
+library(reticulate)
 
 
-# # python environment
+# python environment
 # reticulate::use_virtualenv("C:/Users/Mislav/projects_py/pyquant", required = TRUE)
-# tsfel = reticulate::import("tsfel", convert = FALSE)
+tsfel = reticulate::import("tsfel", convert = FALSE)
 # tsfresh = reticulate::import("tsfresh", convert = FALSE)
-# warnigns = reticulate::import("warnings", convert = FALSE)
-# warnigns$filterwarnings('ignore')
+warnigns = reticulate::import("warnings", convert = FALSE)
+warnigns$filterwarnings('ignore')
 
 # paths
 PATH_PREDICTORS = file.path("./predictors")
@@ -99,8 +99,14 @@ theft_init = RollingTheft$new(
 theft_r = theft_init$get_rolling_features(ohlcv)
 fwrite(theft_r, path_)
 
-# Forecast
-
 # Theft py
-
+path_ = create_path("theftpy")
+theft_init = RollingTheft$new(
+  windows = 400,
+  workers = 1L,
+  at = at,
+  lag = 0L,
+  features_set = c("tsfel"))
+theft_r = theft_init$get_rolling_features(ohlcv)
+fwrite(theft_r, path_)
 
