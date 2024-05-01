@@ -11,11 +11,14 @@ From: r-base:4.3.0
 
   R --slave -e 'install.packages("data.table")'
   R --slave -e 'install.packages("bit64")'
-  R --slave -e 'install.packages("exuber")'
-  R --slave -e 'install.packages("forecast")'
   R --slave -e 'install.packages("remotes")'
   R --slave -e 'remotes::install_github("MislavSag/finfeatures")'
+  # packages
+  R --slave -e 'install.packages("exuber")'
   R --slave -e 'remotes::install_github("ottosven/backCUSUM")'
+  R --slave -e 'remotes::install_github("MislavSag/theftms")'
+  # R --slave -e 'install.packages("forecast")'
+  
 
 %runscript
   Rscript $@
