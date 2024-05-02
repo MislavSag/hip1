@@ -63,12 +63,13 @@ ohlcv = Ohlcv$new(spy[, .(symbol = "SPY", date, open, high, low, close, volume)]
 create_path = function(name) {
   file.path(PATH_PREDICTORS, paste0(name, "-", i, ".csv"))
 }
+workers = 1L
 
 # Exuber
 path_ =   create_path("exuber")
 exuber_init = RollingExuber$new(
   windows = c(400, 400*2),
-  workers = 4L,
+  workers = workers,
   at = at,
   lag = 0L,
   exuber_lag = 1L
@@ -82,7 +83,7 @@ fwrite(exuber, path_)
 path_ = create_path("backcusum")
 backcusum_init = RollingBackcusum$new(
   windows = c(200),
-  workers = 4L,
+  workers = workers,
   at = at,
   lag = 0L,
   alternative = c("greater", "two.sided"),
@@ -94,7 +95,7 @@ fwrite(backcusum, path_)
 path_ = create_path("theftr")
 theft_init = RollingTheft$new(
   windows = 400,
-  workers = 4L,
+  workers = workers,
   at = at,
   lag = 0L,
   features_set = c("catch22", "feasts"))
@@ -116,7 +117,7 @@ fwrite(theft_py, path_)
 path_ = create_path("forecasts")
 forecasts_init = RollingForecats$new(
   windows = 400,
-  workers = 1L,
+  workers = workers,
   at = at,
   lag = 0L,
   forecast_type = c("autoarima", "nnetar", "ets"),
@@ -128,7 +129,7 @@ fwrite(forecasts, path_)
 path_ = create_path("tsfeatures")
 tsfeatures_init = RollingTsfeatures$new(
   windows = 400,
-  workers = 1L,
+  workers = workers,
   at = at,
   lag = 0L,
   scale = TRUE)
@@ -139,7 +140,7 @@ fwrite(tsfeatures, path_)
 path_ = create_path("waveletarima")
 waveletarima_init = RollingWaveletArima$new(
   windows = 400,
-  workers = 1L,
+  workers = workers,
   at = at,
   lag = 0L,
   filter = "haar")
@@ -150,7 +151,7 @@ fwrite(waveletarima, path_)
 path_ = create_path("fracdiff")
 fracdiff_init = RollingFracdiff$new(
   windows = 400,
-  workers = 1L,
+  workers = workers,
   at = at,
   lag = 0L,
   nar = c(1, 2), 
