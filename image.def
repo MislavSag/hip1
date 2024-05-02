@@ -14,7 +14,7 @@ From: r-base:4.3.0
   . /opt/venv/bin/activate
 
   # Install Python packages in the virtual environment
-  pip install numpy tsfel
+  pip install tsfel tsfresh
 
   # Deactivate the virtual environment
   deactivate
