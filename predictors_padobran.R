@@ -6,8 +6,8 @@ library(reticulate)
 # python environment
 # reticulate::use_virtualenv("C:/Users/Mislav/projects_py/pyquant", required = TRUE)
 # theftms::init_theft("/opt/venv")
-reticulate::use_virtualenv("/opt/venv")
-tsfel = reticulate::import("tsfel", convert = FALSE)
+# reticulate::use_virtualenv("/opt/venv")
+tsfel = reticulate::import("tsfel")
 # tsfresh = reticulate::import("tsfresh", convert = FALSE)
 warnigns = reticulate::import("warnings", convert = FALSE)
 warnigns$filterwarnings('ignore')
@@ -64,52 +64,97 @@ create_path = function(name) {
   file.path(PATH_PREDICTORS, paste0(name, "-", i, ".csv"))
 }
 
-# # Exuber
-# path_ =   create_path("exuber")
-# exuber_init = RollingExuber$new(
-#   windows = c(400, 400*2),
-#   workers = 4L,
-#   at = at,
-#   lag = 0L,
-#   exuber_lag = 1L
-# )
-# system.time({
-#   exuber = exuber_init$get_rolling_features(ohlcv, TRUE)
-# })
-# fwrite(exuber, path_)
-# 
-# # Backcusum
-# path_ = create_path("backcusum")
-# backcusum_init = RollingBackcusum$new(
-#   windows = c(200),
-#   workers = 4L,
-#   at = at,
-#   lag = 0L,
-#   alternative = c("greater", "two.sided"),
-#   return_power = c(1, 2))
-# backcusum = backcusum_init$get_rolling_features(ohlcv)
-# fwrite(backcusum, path_)
-# 
-# # Theft r
-# path_ = create_path("theftr")
-# theft_init = RollingTheft$new(
-#   windows = 400,
-#   workers = 4L,
-#   at = at,
-#   lag = 0L,
-#   features_set = c("catch22", "feasts"))
-# theft_r = theft_init$get_rolling_features(ohlcv)
-# fwrite(theft_r, path_)
+# Exuber
+path_ =   create_path("exuber")
+exuber_init = RollingExuber$new(
+  windows = c(400, 400*2),
+  workers = 4L,
+  at = at,
+  lag = 0L,
+  exuber_lag = 1L
+)
+system.time({
+  exuber = exuber_init$get_rolling_features(ohlcv, TRUE)
+})
+fwrite(exuber, path_)
+
+# Backcusum
+path_ = create_path("backcusum")
+backcusum_init = RollingBackcusum$new(
+  windows = c(200),
+  workers = 4L,
+  at = at,
+  lag = 0L,
+  alternative = c("greater", "two.sided"),
+  return_power = c(1, 2))
+backcusum = backcusum_init$get_rolling_features(ohlcv)
+fwrite(backcusum, path_)
+
+# Theft r
+path_ = create_path("theftr")
+theft_init = RollingTheft$new(
+  windows = 400,
+  workers = 4L,
+  at = at,
+  lag = 0L,
+  features_set = c("catch22", "feasts"))
+theft_r = theft_init$get_rolling_features(ohlcv)
+fwrite(theft_r, path_)
 
 # Theft py
-print("thet py")
 path_ = create_path("theftpy")
 theft_init = RollingTheft$new(
   windows = 400,
   workers = 1L,
   at = at,
   lag = 0L,
-  features_set = c("tsfel"))
+  features_set = c("tsfel", "tsfresh"))
 theft_py = suppressMessages(theft_init$get_rolling_features(ohlcv))
 fwrite(theft_py, path_)
 
+# Forecasts
+path_ = create_path("forecasts")
+forecasts_init = RollingForecats$new(
+  windows = 400,
+  workers = 1L,
+  at = at,
+  lag = 0L,
+  forecast_type = c("autoarima", "nnetar", "ets"),
+  h = 22)
+forecasts = suppressMessages(forecasts_init$get_rolling_features(ohlcv))
+fwrite(forecasts, path_)
+
+# Tsfeatures
+path_ = create_path("tsfeatures")
+tsfeatures_init = RollingTsfeatures$new(
+  windows = 400,
+  workers = 1L,
+  at = at,
+  lag = 0L,
+  scale = TRUE)
+tsfeatures = suppressMessages(tsfeatures_init$get_rolling_features(ohlcv))
+fwrite(tsfeatures, path_)
+
+# WaveletArima
+path_ = create_path("waveletarima")
+waveletarima_init = RollingWaveletArima$new(
+  windows = 400,
+  workers = 1L,
+  at = at,
+  lag = 0L,
+  filter = "haar")
+waveletarima = suppressMessages(waveletarima_init$get_rolling_features(ohlcv))
+fwrite(waveletarima, path_)
+
+# FracDiff
+path_ = create_path("fracdiff")
+fracdiff_init = RollingFracdiff$new(
+  windows = 400,
+  workers = 1L,
+  at = at,
+  lag = 0L,
+  nar = c(1, 2), 
+  nma = c(1, 2),
+  bandw_exp = c(0.1, 0.5, 0.9))
+fracdiff = suppressMessages(fracdiff_init$get_rolling_features(ohlcv))
+fwrite(fracdiff, path_)

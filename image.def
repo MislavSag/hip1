@@ -29,7 +29,9 @@ From: r-base:4.3.0
   R --slave -e 'remotes::install_github("ottosven/backCUSUM")'
   R --slave -e 'remotes::install_github("MislavSag/theftms")'
   R --slave -e 'install.packages("forecast")'
-  # R --slave -e 'install.packages("forecast")'
+  R --slave -e 'install.packages("tsfeatures")'
+  R --slave -e 'install.packages("WaveletArima")'
+  R --slave -e 'install.packages("fracdiff")'
 
 %environment
   # Set environment variables to use the virtual environment's Python
