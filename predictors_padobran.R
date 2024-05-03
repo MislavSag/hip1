@@ -6,7 +6,7 @@ library(reticulate)
 # python environment
 # reticulate::use_virtualenv("C:/Users/Mislav/projects_py/pyquant", required = TRUE)
 # theftms::init_theft("/opt/venv")
-# reticulate::use_virtualenv("/opt/venv")
+reticulate::use_virtualenv("/opt/venv")
 tsfel = reticulate::import("tsfel")
 # tsfresh = reticulate::import("tsfresh", convert = FALSE)
 warnigns = reticulate::import("warnings", convert = FALSE)
@@ -68,7 +68,7 @@ workers = 1L
 # Exuber
 path_ =   create_path("exuber")
 windows = c(400, 400*2)
-if (max(at) < min(windows)) {
+if (max(at) > min(windows)) {
   exuber_init = RollingExuber$new(
     windows = c(400, 400*2),
     workers = workers,
@@ -83,7 +83,7 @@ if (max(at) < min(windows)) {
 # Backcusum
 path_ = create_path("backcusum")
 windows = 200
-if (max(at) < min(windows)) {
+if (max(at) > min(windows)) {
   backcusum_init = RollingBackcusum$new(
     windows = windows,
     workers = workers,
@@ -98,7 +98,7 @@ if (max(at) < min(windows)) {
 # Theft r
 path_ = create_path("theftr")
 windows = 400
-if (max(at) < min(windows)) {
+if (max(at) > min(windows)) {
   theft_init = RollingTheft$new(
     windows = windows,
     workers = workers,
@@ -112,7 +112,7 @@ if (max(at) < min(windows)) {
 # Theft py
 path_ = create_path("theftpy")
 windows = 400
-if (max(at) < min(windows)) {
+if (max(at) > min(windows)) {
   theft_init = RollingTheft$new(
     windows = windows,
     workers = 1L,
@@ -126,7 +126,7 @@ if (max(at) < min(windows)) {
 # Forecasts
 path_ = create_path("forecasts")
 windows = 400
-if (max(at) < min(windows)) {
+if (max(at) > min(windows)) {
   forecasts_init = RollingForecats$new(
     windows = windows,
     workers = workers,
@@ -141,7 +141,7 @@ if (max(at) < min(windows)) {
 # Tsfeatures
 path_ = create_path("tsfeatures")
 windows = 400
-if (max(at) < min(windows)) {
+if (max(at) > min(windows)) {
   tsfeatures_init = RollingTsfeatures$new(
     windows = windows,
     workers = workers,
@@ -155,7 +155,7 @@ if (max(at) < min(windows)) {
 # WaveletArima
 path_ = create_path("waveletarima")
 windows = 400
-if (max(at) < min(windows)) {
+if (max(at) > min(windows)) {
   waveletarima_init = RollingWaveletArima$new(
     windows = windows,
     workers = workers,
@@ -169,7 +169,7 @@ if (max(at) < min(windows)) {
 # FracDiff
 path_ = create_path("fracdiff")
 windows = 400
-if (max(at) < min(windows)) {
+if (max(at) > min(windows)) {
   fracdiff_init = RollingFracdiff$new(
     windows = windows,
     workers = workers,
