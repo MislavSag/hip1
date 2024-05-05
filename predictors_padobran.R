@@ -64,13 +64,14 @@ create_path = function(name) {
   file.path(PATH_PREDICTORS, paste0(name, "-", i, ".csv"))
 }
 workers = 1L
+windows = c(100, 400) # day and 2H;  cca 10 days
 
 # Exuber
 path_ =   create_path("exuber")
-windows = c(400, 400*2)
+windows_ = c(windows, 400*2)
 if (max(at) > min(windows)) {
   exuber_init = RollingExuber$new(
-    windows = c(400, 400*2),
+    windows = windows_,
     workers = workers,
     at = at,
     lag = 0L,
@@ -82,10 +83,10 @@ if (max(at) > min(windows)) {
 
 # Backcusum
 path_ = create_path("backcusum")
-windows = 200
+windows_ = c(100, 200)
 if (max(at) > min(windows)) {
   backcusum_init = RollingBackcusum$new(
-    windows = windows,
+    windows = windows_,
     workers = workers,
     at = at,
     lag = 0L,
@@ -97,7 +98,6 @@ if (max(at) > min(windows)) {
 
 # Theft r
 path_ = create_path("theftr")
-windows = 400
 if (max(at) > min(windows)) {
   theft_init = RollingTheft$new(
     windows = windows,
@@ -111,7 +111,6 @@ if (max(at) > min(windows)) {
 
 # Theft py
 path_ = create_path("theftpy")
-windows = 400
 if (max(at) > min(windows)) {
   theft_init = RollingTheft$new(
     windows = windows,
@@ -125,7 +124,6 @@ if (max(at) > min(windows)) {
 
 # Forecasts
 path_ = create_path("forecasts")
-windows = 400
 if (max(at) > min(windows)) {
   forecasts_init = RollingForecats$new(
     windows = windows,
@@ -140,7 +138,6 @@ if (max(at) > min(windows)) {
   
 # Tsfeatures
 path_ = create_path("tsfeatures")
-windows = 400
 if (max(at) > min(windows)) {
   tsfeatures_init = RollingTsfeatures$new(
     windows = windows,
@@ -154,7 +151,6 @@ if (max(at) > min(windows)) {
 
 # WaveletArima
 path_ = create_path("waveletarima")
-windows = 400
 if (max(at) > min(windows)) {
   waveletarima_init = RollingWaveletArima$new(
     windows = windows,
@@ -168,7 +164,6 @@ if (max(at) > min(windows)) {
 
 # FracDiff
 path_ = create_path("fracdiff")
-windows = 400
 if (max(at) > min(windows)) {
   fracdiff_init = RollingFracdiff$new(
     windows = windows,
