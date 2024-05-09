@@ -1,5 +1,4 @@
 library(data.table)
-library(fs)
 library(mlr3)
 library(mlr3learners)
 library(AzureStor)
@@ -50,9 +49,9 @@ print("Prepare data")
 # read predictors
 if (interactive()) {
   pead_file_local = list.files("F:/predictors/spyml_dt", full.names = TRUE)
-  dates = as.Date(gsub(".*-", "", path_ext_remove(path_file(pead_file_local))),
-                  format = "%Y%m%d")
-  DT = fread(pead_file_local[which.max(dates)])
+  # dates = as.Date(gsub(".*-", "", path_ext_remove(path_file(pead_file_local))),
+  #                 format = "%Y%m%d")
+  # DT = fread(pead_file_local[which.max(dates)])
 } else {
   DT = fread("spyml-predictors-20240129.csv")
 }
