@@ -1,7 +1,7 @@
 library(data.table)
 library(mlr3)
 library(mlr3learners)
-library(AzureStor)
+# library(AzureStor)
 library(lubridate)
 library(mlr3verse)
 library(future.apply)
@@ -36,11 +36,11 @@ monnb <- function(d) {
 mondf <- function(d1, d2) { monnb(d2) - monnb(d1) }
 diff_in_weeks = function(d1, d2) difftime(d2, d1, units = "weeks") # weeks
 
-# Azure creditentials
-endpoint = "https://snpmarketdata.blob.core.windows.net/"
-key = "0M4WRlV0/1b6b3ZpFKJvevg4xbC/gaNBcdtVZW+zOZcRi0ZLfOm1v/j2FZ4v+o8lycJLu1wVE6HT+ASt0DdAPQ=="
-BLOBENDPOINT = storage_endpoint(endpoint, key=key)
-cont = storage_container(BLOBENDPOINT, "jphd")
+# # Azure creditentials
+# endpoint = "https://snpmarketdata.blob.core.windows.net/"
+# key = "0M4WRlV0/1b6b3ZpFKJvevg4xbC/gaNBcdtVZW+zOZcRi0ZLfOm1v/j2FZ4v+o8lycJLu1wVE6HT+ASt0DdAPQ=="
+# BLOBENDPOINT = storage_endpoint(endpoint, key=key)
+# cont = storage_container(BLOBENDPOINT, "jphd")
 
 
 # PREPARE DATA ------------------------------------------------------------
