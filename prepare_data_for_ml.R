@@ -1,5 +1,6 @@
 library(data.table)
 library(AzureStor)
+library(finfeatures)
 
 
 # DATA --------------------------------------------------------------------
@@ -28,10 +29,27 @@ setnames(predictors, gsub('\"|\\(|\\)|,', '', colnames(predictors)))
 # Merge ohlcv and predictors
 dt = merge(spy, predictors, by = "date", all.x = TRUE, all.y = FALSE)
 
+# Generate OHLCV predictors
+ohlcv = Ohlcv$new(spy[, .(symbol = "SPY", date, open, high, low, close, volume)])
+ohlcv_predictors_init = OhlcvFeaturesDaily$new(
+  windows = c(12, 24, 48, 78, 78*5, 78*10, 78*22),
+  quantile_divergence_window = c(78*5, 78*10, 78*22)
+)
+ohlcv_predictors = ohlcv_predictors_init$get_ohlcv_features(copy(ohlcv$X))
+
+# Merge ohlcv and predictors
+cols_remove = c("symbol", "open", "high", "low", "close", "volume", "returns")
+ohlcv_predictors = ohlcv_predictors[, .SD, .SDcols = -cols_remove]
+dt = merge(dt, ohlcv_predictors, by = "date", all.x = TRUE, all.y = FALSE)
+
+# Check data table with all predictors
+dim(dt)
+dt[, 1:10]
+
 # Check number of missing values
 cols_na_sum = dt[, lapply(.SD, function(x) sum(is.na(x))), .SDcols = colnames(dt)]
 cols_na_sum = melt(cols_na_sum, id.vars = "date")
-cols_na_sum[value > 1000]
+cols_na_sum[value > 2000]
 
 
 # TARGETS -----------------------------------------------------------------
@@ -112,6 +130,7 @@ features_ = dt[, ..cols_features]
 remove_cols = colnames(features_)[apply(features_, 2, var, na.rm=TRUE) == 0]
 print(paste0("Removing feature with 0 standard deviation: ", remove_cols))
 dt = dt[, .SD, .SDcols = -remove_cols]
+cols_features = setdiff(cols_features, remove_cols)
 
 # Convert variables with low number of unique values to factors
 int_numbers = na.omit(dt[, ..cols_features])[, lapply(.SD, function(x) all(floor(x) == x))]

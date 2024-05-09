@@ -5,6 +5,9 @@ library(mlr3learners)
 library(AzureStor)
 library(lubridate)
 library(mlr3verse)
+library(future.apply)
+library(batchtools)
+library(mlr3batchmark)
 
 
 # COMMAND LINE ARGUMENTS --------------------------------------------------
@@ -98,17 +101,19 @@ create_custom_rolling_windows = function(task,
                                          test_duration) {
   # DEBUG
   # task = tasks[[1]]
-  # duration_unit = "day"
-  # train_duration = 252
+  # duration_unit = "week"
+  # train_duration = 52 * 2
   # gap_duration = 1
-  # tune_duration = 10
+  # tune_duration = 4
   # test_duration = 1
   
   # Function to convert durations to the appropriate period
   convert_duration = function(duration) {
     if (duration_unit == "day") {
       days(duration)
-    } else { # TODO: add other duration unit
+    } else if (duration_unit == "week") {
+      weeks(duration)
+    } else {
       months(duration)
     }
   }
@@ -125,11 +130,15 @@ create_custom_rolling_windows = function(task,
   # Initialize start and end dates based on duration unit
   start_date = if (duration_unit == "day") {
     floor_date(min(data$date_col), "day")
+  } else if (duration_unit == "week") {
+    floor_date(min(data$date_col), "week")
   } else {
     floor_date(min(data$date_col), "month")
   }
   end_date = if (duration_unit == "day") {
     ceiling_date(max(data$date_col), "day")
+  } else if(duration_unit == "week") {
+    ceiling_date(max(data$date_col), "week") - days(1)
   } else {
     ceiling_date(max(data$date_col), "month") - days(1)
   }
@@ -138,11 +147,19 @@ create_custom_rolling_windows = function(task,
   folds = list()
   
   while (start_date < end_date) {
-    train_end = start_date %m+% convert_duration(train_duration)
+    if (duration_unit %in% c("week", "month")) {
+      train_end = start_date %m+% convert_duration(train_duration) - days(1)
+    } else {
+      train_end = start_date %m+% convert_duration(train_duration)  
+    }
     gap1_end  = train_end %m+% convert_duration(gap_duration)
     tune_end  = gap1_end %m+% convert_duration(tune_duration)
     gap2_end  = tune_end %m+% convert_duration(gap_duration)
-    test_end  = gap2_end %m+% convert_duration(test_duration)
+    if (duration_unit %in% c("week", "month")) {
+      test_end  = gap2_end %m+% convert_duration(test_duration) - days(1)
+    } else {
+      test_end  = gap2_end %m+% convert_duration(test_duration)
+    }
     
     # Ensure the fold does not exceed the data range
     if (test_end > end_date) {
@@ -159,6 +176,8 @@ create_custom_rolling_windows = function(task,
     # Update the start date for the next fold
     start_date = if (duration_unit == "day") {
       start_date %m+% days(1)
+    } else if (duration_unit == "week") {
+      start_date %m+% weeks(1)
     } else {
       start_date %m+% months(1)
     }
@@ -198,11 +217,11 @@ task_check = function(task) {
 cv_split = function(task) {
   create_custom_rolling_windows(
     task = task$clone(),
-    duration_unit = "day",
-    train_duration = 252,
-    gap_duration = task_check(task),
-    tune_duration = 10,
-    test_duration = task_check(task)
+    duration_unit = "week",
+    train_duration = 52*2,
+    gap_duration = 1,
+    tune_duration = 4*3,
+    test_duration = 1
   )
 }
 custom_cvs = lapply(tasks, function(tsk) {
@@ -703,6 +722,7 @@ set_threads(graph_glmnet, n = threads)
 # DESIGNS -----------------------------------------------------------------
 designs_l = lapply(seq_along(custom_cvs), function(j) {
   # Get current cv
+  # j = 1
   cv_ = custom_cvs[[j]]
   
   # get cv inner object
@@ -710,8 +730,18 @@ designs_l = lapply(seq_along(custom_cvs), function(j) {
   cv_outer = cv_$outer
   cat("Number of iterations fo cv inner is ", cv_inner$iters, "\n")
   
-  to_ = 1:cv_inner$iters # TODO
-  designs_cv_l = lapply(to_, function(i) { # 1:cv_inner$iters
+  # to_ = 1:cv_inner$iters # TODO
+  # Define folds
+  if (interactive()) {
+    to_ = 1:5  
+  } else {
+    to_ = 1:cv_inner$iters
+  }
+  
+  # Main design CV loop
+  designs_cv_l = lapply(to_, function(i) {
+    
+    print(i)
 
     ############### COMPARE ############    
     # # debug
@@ -911,7 +941,7 @@ designs_l = lapply(seq_along(custom_cvs), function(j) {
       resamplings = customo_
     )
   })
-  designs_cv = do.call(rbind, designs_cv_l)
+  do.call(rbind, designs_cv_l)
 })
 designs = do.call(rbind, designs_l)
 
@@ -952,6 +982,6 @@ sh_file = sprintf("
 cd ${PBS_O_WORKDIR}
 apptainer run image.sif run_job.R 0
 ", nrow(designs), dirname_)
-sh_file_name = "run_month.sh"
+sh_file_name = "jobs.sh"
 file.create(sh_file_name)
 writeLines(sh_file, sh_file_name)

@@ -14,6 +14,3 @@ apptainer run image.sif predictors_padobran.R
 # for i in $(seq 0 500 26200); do
 #     apptainer run image.sif predictors_daily_supek.R $i
 # done
-
-
-
