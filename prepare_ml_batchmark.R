@@ -48,10 +48,11 @@ print("Prepare data")
 
 # read predictors
 if (interactive()) {
+  library(fs)
   pead_file_local = list.files("F:/predictors/spyml_dt", full.names = TRUE)
-  # dates = as.Date(gsub(".*-", "", path_ext_remove(path_file(pead_file_local))),
-  #                 format = "%Y%m%d")
-  # DT = fread(pead_file_local[which.max(dates)])
+  dates = as.Date(gsub(".*-", "", path_ext_remove(path_file(pead_file_local))),
+                  format = "%Y%m%d")
+  DT = fread(pead_file_local[which.max(dates)])
 } else {
   DT = fread("spyml-predictors-20240129.csv")
 }
@@ -59,7 +60,7 @@ if (interactive()) {
 # Define predictors
 cols_non_features = c("date", "open", "high", "low", "close", "volume")
 targets = c("targetRet1", "targetRet6", "targetRet12")
-cols_features = setdiff(colnames(dt), c(cols_non_features, targets))
+cols_features = setdiff(colnames(DT), c(cols_non_features, targets))
 
 # Convert columns to numeric. This is important only if we import existing features
 chr_to_num_cols = setdiff(colnames(DT[, .SD, .SDcols = is.character]), c("symbol"))
@@ -311,7 +312,7 @@ filters_ = list(
   po("filter", flt("carscore"), filter.nfeat = 5), # UNCOMMENT LATER< SLOWER SO COMMENTED FOR DEVELOPING
   po("filter", flt("information_gain"), filter.nfeat = 5),
   po("filter", filter = flt("relief"), filter.nfeat = 5),
-  po("filter", filter = flt("gausscov_f1st"), p0 = 0.25, filter.cutoff = 0)
+  po("filter", filter = flt("gausscov_f1st"), p0 = 0.05, filter.cutoff = 0)
   # po("filter", mlr3filters::flt("importance", learner = mlr3::lrn("classif.rpart")), filter.nfeat = 10, id = "importance_1"),
   # po("filter", mlr3filters::flt("importance", learner = lrn), filter.nfeat = 10, id = "importance_2")
 )
@@ -382,41 +383,23 @@ search_space_template = ps(
   scale_branch.selection = p_fct(levels = c("uniformization", "scale"))
 )
 
-# if (interactive()) {
-#   # show all combinations from search space, like in grid
-#   sp_grid = generate_design_grid(search_space_template, 1)
-#   sp_grid = sp_grid$data
-#   sp_grid
-#
-#   # check ids of nth cv sets
-#   train_ids = custom_cvs[[1]]$inner$instance$train[[1]]
-#
-#   # help graph for testing preprocessing
-#   preprocess_test = function(
-    #     fb_ = c("nop_filter_target", "filter_target_select")
-#     ) {
-#     fb_ = match.arg(fb_) # fb_ = "nop_filter_target"
-#     task_ = tasks[[1]]$clone()
-#     nr = task_$nrow
-#     rows_ = (nr-10000):nr
-#     # task_$filter(rows_)
-#     task_$filter(train_ids)
-#     # dates = task_$backend$data(rows_, "date")
-#     # print(dates[, min(date)])
-#     # print(dates[, max(date)])
-#     gr_test = graph_template$clone()
-#     # gr_test$param_set$values$filter_target_branch.selection = fb_
-#     # gr_test$param_set$values$filter_target_id.q = 0.3
-#     # gr_test$param_set$values$subsample.frac = 0.6
-#     # gr_test$param_set$values$dropcorr.cutoff = 0.99
-#     # gr_test$param_set$values$scale_branch.selection = sc_
-#     return(gr_test$train(task_))
-#   }
-#
-#   # test graph preprocesing
-#   system.time({test_default = preprocess_test()})
-#   # test_2 = preprocess_test(fb_ = "filter_target_select")
-# }
+if (interactive()) {
+  # show all combinations from search space, like in grid
+  sp_grid = generate_design_grid(search_space_template, 1)
+  sp_grid = sp_grid$data
+  sp_grid
+
+  # check ids of nth cv sets
+  train_ids = custom_cvs[[1]]$inner$instance$train[[1]]
+
+  # help graph for testing preprocessing
+  task_ = tasks[[1]]$clone()
+  nr = task_$nrow
+  rows_ = (nr-10000):nr
+  task_$filter(train_ids)
+  gr_test = graph_template$clone()
+  system.time({test_default = gr_test$train(task_)})
+}
 
 # random forest graph
 graph_rf = graph_template %>>%
