@@ -685,7 +685,7 @@ search_space_bart$add(
 # } else {
 #   threads = 4
 # }
-threads = 4
+threads = 8
 set_threads(graph_rf, n = threads)
 set_threads(graph_xgboost, n = threads)
 set_threads(graph_bart, n = threads)
@@ -955,8 +955,8 @@ sh_file = sprintf("
 #!/bin/bash
 
 #PBS -N PEAD
-#PBS -l ncpus=4
-#PBS -l mem=8GB
+#PBS -l ncpus=8
+#PBS -l mem=16GB
 #PBS -J 1-%d
 #PBS -o %s/logs
 #PBS -j oe
