@@ -348,7 +348,7 @@ graph_nonfilter_lrn = as_learner(graph_nonfilter)
 
 # filter graph
 graph_filter = 
-  po("filter_rows", phase = "train") %>>%
+  po("filter_rows", phase = "always") %>>%
   po("dropnacol", id = "dropnacol", cutoff = 0.05) %>>%
   po("dropna", id = "dropna") %>>%
   po("removeconstants", id = "removeconstants_1", ratio = 0)  %>>%
