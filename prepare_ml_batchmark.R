@@ -375,7 +375,7 @@ search_space_nonpca = ps(
 as.data.table(graph_filter_lrn$param_set)[, .(id, class, lower, upper)]
 as.data.table(graph_filter_lrn$param_set)[1:100, .(id, class, lower, upper)]
 tasks[[1]]$feature_names[grep("event", tasks[[1]]$feature_names)]
-tasks[[1]]$backend$data(rows = 1:tasks[[1]]$nrow, cols = c("date", "eventVol1001"))[eventVol1001 == 1]
+# tasks[[1]]$backend$data(rows = 1:tasks[[1]]$nrow, cols = c("date", "eventVol1001"))[eventVol1001 == 1]
 search_space = ps(
   filterrows.filter_formula = p_fct(levels = as.character(1:2)),
   # learner branch
