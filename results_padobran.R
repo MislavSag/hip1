@@ -4,15 +4,6 @@ library(matrixStats)
 library(PerformanceAnalytics)
 library(ggplot2)
 
-# library(data.table)
-# library(mlr3verse)
-# library(batchtools)
-# library(duckdb)
-# # library(AzureStor)
-# library(future.apply)
-# library(lubridate)
-# library(future.apply)
-
 
 # Creds
 # blob_key = "0M4WRlV0/1b6b3ZpFKJvevg4xbC/gaNBcdtVZW+zOZcRi0ZLfOm1v/j2FZ4v+o8lycJLu1wVE6HT+ASt0DdAPQ=="
@@ -20,7 +11,8 @@ library(ggplot2)
 # BLOBENDPOINT = storage_endpoint(endpoint, key=blob_key)
 
 # Globals
-PATH = "F:/padobran/spyml"
+# PATH = "F:/padobran/spyml"
+PATH = "F:/strategies/H1"
 
 # load registry
 reg = loadRegistry(PATH, work.dir=PATH)
@@ -90,11 +82,11 @@ predictions[, task := gsub("task_", "", task)]
 predictions = backends[, .(date, task, row_ids)][predictions, on = c("task", "row_ids")]
 
 # Measures
-source("AdjLoss2.R")
-source("PortfolioRet.R")
-mlr_measures$add("linex", finautoml::Linex)
-mlr_measures$add("adjloss2", AdjLoss2)
-mlr_measures$add("portfolio_ret", PortfolioRet)
+# source("AdjLoss2.R")
+# source("PortfolioRet.R")
+# mlr_measures$add("linex", finautoml::Linex)
+# mlr_measures$add("adjloss2", AdjLoss2)
+# mlr_measures$add("portfolio_ret", PortfolioRet)
 
 
 # MARKET DATA ------------------------------------------------------------

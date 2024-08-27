@@ -1,0 +1,1023 @@
+[1] 11
+[1] "My predictors."
+[1] "Calculate returns"
+[1] "Close ATH"
+[1] "Rolling min returns"
+[1] "Volume percent changes"
+[1] "BidAsk spread"
+[1] "Calculate whole number discrepancy."
+[1] "Rolling volatility."
+[1] "OHLCV volatility."
+[1] "Calculate moments."
+[1] "Calculate technical indicators."
+[1] "ATR"
+[1] "BBANDS"
+[1] "chaikinAD"
+[1] "Chaikin volatility"
+[1] "CLV"
+[1] "CMF"
+[1] "CMO"
+[1] "Donchian Channel"
+[1] "DVI"
+[1] "GMMA"
+[1] "Keltner Channels"
+[1] "KST"
+[1] "MFI"
+[1] "RSI"
+[1] "Calculate trading rules."
+[1] "Calculate rolling lin regression."
+[1] "Rolling sharpe"
+[1] "Calculate rolling quantile div"
+[1] "Open source asset pricing daily variation."
+[1] "52 week"
+[1] "Rolling max returns"
+[1] "DolVol"
+[1] 114141   3018
+Key: <date>
+                       date    open    high     low   close volume exuber_100_1_adf_log
+                     <POSc>   <num>   <num>   <num>   <num>  <num>                <num>
+     1: 2018-05-01 13:30:00 263.900 264.000 263.710 263.770 257541                   NA
+     2: 2018-05-01 13:35:00 263.760 263.860 263.510 263.570 362440                   NA
+     3: 2018-05-01 13:40:00 263.540 263.620 263.370 263.450 235639                   NA
+     4: 2018-05-01 13:45:00 263.450 263.650 263.400 263.620 151445                   NA
+     5: 2018-05-01 13:50:00 263.630 263.850 263.620 263.650  74752                   NA
+    ---                                                                                
+114137: 2024-01-29 20:40:00 490.940 490.950 490.630 490.735 203513           0.40465619
+114138: 2024-01-29 20:45:00 490.735 490.845 490.390 490.590 190555           0.03427637
+114139: 2024-01-29 20:50:00 490.585 490.790 490.460 490.640 280305           0.14446970
+114140: 2024-01-29 20:55:00 490.635 491.090 490.565 491.075 357929           0.56939154
+114141: 2024-01-29 21:00:00 491.070 491.360 491.010 491.100 615735           0.38971235
+        exuber_100_1_sadf_log exuber_100_1_gsadf_log exuber_100_1_badf_log
+                        <num>                  <num>                 <num>
+     1:                    NA                     NA                    NA
+     2:                    NA                     NA                    NA
+     3:                    NA                     NA                    NA
+     4:                    NA                     NA                    NA
+     5:                    NA                     NA                    NA
+    ---                                                                   
+114137:              1.640988               2.173486            0.40465619
+114138:              1.557418               2.173486            0.03427637
+114139:              1.653522               2.173486            0.14446970
+114140:              1.583515               2.173486            0.56939154
+114141:              1.442795               2.173486            0.38971235
+      date                                                 variable  value
+     <int>                                                   <fctr>  <int>
+  1:     0 tsfresh_values__fft_coefficient__attr_real__coeff_51_100 114141
+  2:     0 tsfresh_values__fft_coefficient__attr_real__coeff_52_100 114141
+  3:     0 tsfresh_values__fft_coefficient__attr_real__coeff_53_100 114141
+  4:     0 tsfresh_values__fft_coefficient__attr_real__coeff_54_100 114141
+  5:     0 tsfresh_values__fft_coefficient__attr_real__coeff_55_100 114141
+ ---                                                                      
+207:     0                                  sd_reg_fdSperio_0_1_100 114141
+208:     0                                          d_fdGPH_0_1_400 114141
+209:     0                                     sd_reg_fdGPH_0_1_400 114141
+210:     0                                       d_fdSperio_0_1_400 114141
+211:     0                                  sd_reg_fdSperio_0_1_400 114141
+Key: <date>
+                       date event_vol_100_1 event_vol_100_2 event_vol_100_3 event_vol_450_1
+                     <POSc>           <int>           <int>           <int>           <int>
+     1: 2018-05-01 13:30:00               0               0               0               0
+     2: 2018-05-01 13:35:00               0               0               0               0
+     3: 2018-05-01 13:40:00               0               0               0               0
+     4: 2018-05-01 13:45:00               0               0               0               0
+     5: 2018-05-01 13:50:00               0               0               0               0
+    ---                                                                                    
+114137: 2024-01-29 20:40:00               0               0               0               0
+114138: 2024-01-29 20:45:00               0               0               0               0
+114139: 2024-01-29 20:50:00               0               0               0               0
+114140: 2024-01-29 20:55:00               1               1               0               1
+114141: 2024-01-29 21:00:00               0               0               0               0
+        event_vol_450_2 event_vol_450_3
+                  <int>           <int>
+     1:               0               0
+     2:               0               0
+     3:               0               0
+     4:               0               0
+     5:               0               0
+    ---                                
+114137:               0               0
+114138:               0               0
+114139:               0               0
+114140:               0               0
+114141:               0               0
+  [1] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_51_100"             
+  [2] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_52_100"             
+  [3] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_53_100"             
+  [4] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_54_100"             
+  [5] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_55_100"             
+  [6] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_56_100"             
+  [7] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_57_100"             
+  [8] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_58_100"             
+  [9] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_59_100"             
+ [10] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_60_100"             
+ [11] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_61_100"             
+ [12] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_62_100"             
+ [13] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_63_100"             
+ [14] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_64_100"             
+ [15] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_65_100"             
+ [16] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_66_100"             
+ [17] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_67_100"             
+ [18] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_68_100"             
+ [19] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_69_100"             
+ [20] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_70_100"             
+ [21] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_71_100"             
+ [22] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_72_100"             
+ [23] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_73_100"             
+ [24] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_74_100"             
+ [25] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_75_100"             
+ [26] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_76_100"             
+ [27] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_77_100"             
+ [28] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_78_100"             
+ [29] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_79_100"             
+ [30] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_80_100"             
+ [31] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_81_100"             
+ [32] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_82_100"             
+ [33] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_83_100"             
+ [34] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_84_100"             
+ [35] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_85_100"             
+ [36] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_86_100"             
+ [37] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_87_100"             
+ [38] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_88_100"             
+ [39] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_89_100"             
+ [40] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_90_100"             
+ [41] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_91_100"             
+ [42] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_92_100"             
+ [43] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_93_100"             
+ [44] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_94_100"             
+ [45] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_95_100"             
+ [46] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_96_100"             
+ [47] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_97_100"             
+ [48] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_98_100"             
+ [49] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_real__coeff_99_100"             
+ [50] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_51_100"             
+ [51] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_52_100"             
+ [52] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_53_100"             
+ [53] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_54_100"             
+ [54] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_55_100"             
+ [55] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_56_100"             
+ [56] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_57_100"             
+ [57] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_58_100"             
+ [58] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_59_100"             
+ [59] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_60_100"             
+ [60] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_61_100"             
+ [61] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_62_100"             
+ [62] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_63_100"             
+ [63] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_64_100"             
+ [64] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_65_100"             
+ [65] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_66_100"             
+ [66] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_67_100"             
+ [67] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_68_100"             
+ [68] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_69_100"             
+ [69] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_70_100"             
+ [70] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_71_100"             
+ [71] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_72_100"             
+ [72] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_73_100"             
+ [73] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_74_100"             
+ [74] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_75_100"             
+ [75] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_76_100"             
+ [76] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_77_100"             
+ [77] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_78_100"             
+ [78] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_79_100"             
+ [79] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_80_100"             
+ [80] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_81_100"             
+ [81] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_82_100"             
+ [82] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_83_100"             
+ [83] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_84_100"             
+ [84] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_85_100"             
+ [85] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_86_100"             
+ [86] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_87_100"             
+ [87] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_88_100"             
+ [88] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_89_100"             
+ [89] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_90_100"             
+ [90] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_91_100"             
+ [91] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_92_100"             
+ [92] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_93_100"             
+ [93] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_94_100"             
+ [94] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_95_100"             
+ [95] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_96_100"             
+ [96] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_97_100"             
+ [97] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_98_100"             
+ [98] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_imag__coeff_99_100"             
+ [99] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_51_100"              
+[100] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_52_100"              
+[101] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_53_100"              
+[102] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_54_100"              
+[103] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_55_100"              
+[104] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_56_100"              
+[105] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_57_100"              
+[106] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_58_100"              
+[107] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_59_100"              
+[108] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_60_100"              
+[109] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_61_100"              
+[110] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_62_100"              
+[111] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_63_100"              
+[112] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_64_100"              
+[113] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_65_100"              
+[114] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_66_100"              
+[115] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_67_100"              
+[116] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_68_100"              
+[117] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_69_100"              
+[118] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_70_100"              
+[119] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_71_100"              
+[120] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_72_100"              
+[121] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_73_100"              
+[122] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_74_100"              
+[123] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_75_100"              
+[124] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_76_100"              
+[125] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_77_100"              
+[126] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_78_100"              
+[127] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_79_100"              
+[128] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_80_100"              
+[129] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_81_100"              
+[130] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_82_100"              
+[131] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_83_100"              
+[132] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_84_100"              
+[133] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_85_100"              
+[134] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_86_100"              
+[135] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_87_100"              
+[136] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_88_100"              
+[137] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_89_100"              
+[138] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_90_100"              
+[139] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_91_100"              
+[140] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_92_100"              
+[141] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_93_100"              
+[142] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_94_100"              
+[143] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_95_100"              
+[144] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_96_100"              
+[145] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_97_100"              
+[146] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_98_100"              
+[147] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_abs__coeff_99_100"              
+[148] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_51_100"            
+[149] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_52_100"            
+[150] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_53_100"            
+[151] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_54_100"            
+[152] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_55_100"            
+[153] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_56_100"            
+[154] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_57_100"            
+[155] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_58_100"            
+[156] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_59_100"            
+[157] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_60_100"            
+[158] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_61_100"            
+[159] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_62_100"            
+[160] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_63_100"            
+[161] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_64_100"            
+[162] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_65_100"            
+[163] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_66_100"            
+[164] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_67_100"            
+[165] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_68_100"            
+[166] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_69_100"            
+[167] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_70_100"            
+[168] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_71_100"            
+[169] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_72_100"            
+[170] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_73_100"            
+[171] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_74_100"            
+[172] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_75_100"            
+[173] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_76_100"            
+[174] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_77_100"            
+[175] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_78_100"            
+[176] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_79_100"            
+[177] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_80_100"            
+[178] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_81_100"            
+[179] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_82_100"            
+[180] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_83_100"            
+[181] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_84_100"            
+[182] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_85_100"            
+[183] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_86_100"            
+[184] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_87_100"            
+[185] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_88_100"            
+[186] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_89_100"            
+[187] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_90_100"            
+[188] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_91_100"            
+[189] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_92_100"            
+[190] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_93_100"            
+[191] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_94_100"            
+[192] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_95_100"            
+[193] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_96_100"            
+[194] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_97_100"            
+[195] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_98_100"            
+[196] "Removing columns with many NA values: tsfresh_values__fft_coefficient__attr_angle__coeff_99_100"            
+[197] "Removing columns with many NA values: tsfresh_values__query_similarity_count__query_None__threshold_0_0_100"
+[198] "Removing columns with many NA values: tsfresh_values__query_similarity_count__query_None__threshold_0_0_400"
+[199] "Removing columns with many NA values: d_fdGPH_0_1_100"                                                      
+[200] "Removing columns with many NA values: sd_reg_fdGPH_0_1_100"                                                 
+[201] "Removing columns with many NA values: d_fdSperio_0_1_100"                                                   
+[202] "Removing columns with many NA values: sd_reg_fdSperio_0_1_100"                                              
+[203] "Removing columns with many NA values: d_fdGPH_0_1_400"                                                      
+[204] "Removing columns with many NA values: sd_reg_fdGPH_0_1_400"                                                 
+[205] "Removing columns with many NA values: d_fdSperio_0_1_400"                                                   
+[206] "Removing columns with many NA values: sd_reg_fdSperio_0_1_400"                                              
+ [1] "Removing columns with Inf values: sd_as_fdGPH_0_1_100"   
+ [2] "Removing columns with Inf values: sd_as_fdSperio_0_1_100"
+ [3] "Removing columns with Inf values: sd_as_fdGPH_0_1_400"   
+ [4] "Removing columns with Inf values: sd_as_fdSperio_0_1_400"
+ [5] "Removing columns with Inf values: lm_cf1_12"             
+ [6] "Removing columns with Inf values: lm_cf1_24"             
+ [7] "Removing columns with Inf values: lm_cf1_48"             
+ [8] "Removing columns with Inf values: lm_cf1_78"             
+ [9] "Removing columns with Inf values: lm_cf1_390"            
+[10] "Removing columns with Inf values: lm_cf1_780"            
+[11] "Removing columns with Inf values: lm_cf1_1716"           
+[1] "Removing 0 rows because of Inf values"
+              min_date            max_date      N
+                <POSc>              <POSc>  <int>
+1: 2018-05-01 13:30:00 2024-01-29 21:00:00 114141
+  [1] "Removing feature with 0 standard deviation: feastsZeroRunMean100"                                      
+  [2] "Removing feature with 0 standard deviation: feastsZeroStartProp100"                                    
+  [3] "Removing feature with 0 standard deviation: feastsZeroEndProp100"                                      
+  [4] "Removing feature with 0 standard deviation: feastsNsdiffs100"                                          
+  [5] "Removing feature with 0 standard deviation: feastsZeroRunMean400"                                      
+  [6] "Removing feature with 0 standard deviation: feastsZeroStartProp400"                                    
+  [7] "Removing feature with 0 standard deviation: feastsZeroEndProp400"                                      
+  [8] "Removing feature with 0 standard deviation: feastsNsdiffs400"                                          
+  [9] "Removing feature with 0 standard deviation: feastsBpPvalue400"                                         
+ [10] "Removing feature with 0 standard deviation: feastsLbPvalue400"                                         
+ [11] "Removing feature with 0 standard deviation: tSFEL0ECDF0100"                                            
+ [12] "Removing feature with 0 standard deviation: tSFEL0ECDF1100"                                            
+ [13] "Removing feature with 0 standard deviation: tSFEL0ECDF2100"                                            
+ [14] "Removing feature with 0 standard deviation: tSFEL0ECDF3100"                                            
+ [15] "Removing feature with 0 standard deviation: tSFEL0ECDF4100"                                            
+ [16] "Removing feature with 0 standard deviation: tSFEL0ECDF5100"                                            
+ [17] "Removing feature with 0 standard deviation: tSFEL0ECDF6100"                                            
+ [18] "Removing feature with 0 standard deviation: tSFEL0ECDF7100"                                            
+ [19] "Removing feature with 0 standard deviation: tSFEL0ECDF8100"                                            
+ [20] "Removing feature with 0 standard deviation: tSFEL0ECDF9100"                                            
+ [21] "Removing feature with 0 standard deviation: tSFEL0Histogram0100"                                       
+ [22] "Removing feature with 0 standard deviation: tSFEL0Histogram1100"                                       
+ [23] "Removing feature with 0 standard deviation: tSFEL0Histogram2100"                                       
+ [24] "Removing feature with 0 standard deviation: tSFEL0Histogram3100"                                       
+ [25] "Removing feature with 0 standard deviation: tSFEL0Histogram4100"                                       
+ [26] "Removing feature with 0 standard deviation: tSFEL0Histogram5100"                                       
+ [27] "Removing feature with 0 standard deviation: tSFEL0Histogram6100"                                       
+ [28] "Removing feature with 0 standard deviation: tSFEL0Histogram7100"                                       
+ [29] "Removing feature with 0 standard deviation: tSFEL0Histogram8100"                                       
+ [30] "Removing feature with 0 standard deviation: tSFEL0Histogram9100"                                       
+ [31] "Removing feature with 0 standard deviation: tSFEL0MedianFrequency100"                                  
+ [32] "Removing feature with 0 standard deviation: tSFEL0SpectralRollon100"                                   
+ [33] "Removing feature with 0 standard deviation: tSFEL0ZeroCrossingRate100"                                 
+ [34] "Removing feature with 0 standard deviation: tsfreshValuesLength100"                                    
+ [35] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr00100"                        
+ [36] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr04100"                        
+ [37] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr045100"                       
+ [38] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr05100"                        
+ [39] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr055100"                       
+ [40] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr06000000000000001100"         
+ [41] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr065100"                       
+ [42] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr07000000000000001100"         
+ [43] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr075100"                       
+ [44] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr08100"                        
+ [45] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr08500000000000001100"         
+ [46] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr09100"                        
+ [47] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr09500000000000001100"         
+ [48] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr005100"                
+ [49] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr045100"                
+ [50] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr05100"                 
+ [51] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr055100"                
+ [52] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr06000000000000001100"  
+ [53] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr065100"                
+ [54] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr07000000000000001100"  
+ [55] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr075100"                
+ [56] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr08100"                 
+ [57] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr08500000000000001100"  
+ [58] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr09100"                 
+ [59] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr09500000000000001100"  
+ [60] "Removing feature with 0 standard deviation: tsfreshValuesAutocorrelationLag0100"                       
+ [61] "Removing feature with 0 standard deviation: tsfreshValuesPartialAutocorrelationLag0100"                
+ [62] "Removing feature with 0 standard deviation: tsfreshValuesNumberPeaksn50100"                            
+ [63] "Removing feature with 0 standard deviation: tsfreshValuesFftCoefficientAttrImagCoeff0100"              
+ [64] "Removing feature with 0 standard deviation: tsfreshValuesFftCoefficientAttrImagCoeff50100"             
+ [65] "Removing feature with 0 standard deviation: tsfreshValuesFftCoefficientAttrAngleCoeff0100"             
+ [66] "Removing feature with 0 standard deviation: tsfreshValuesValueCountValue0100"                          
+ [67] "Removing feature with 0 standard deviation: tsfreshValuesValueCountValue1100"                          
+ [68] "Removing feature with 0 standard deviation: tsfreshValuesValueCountValue1100"                          
+ [69] "Removing feature with 0 standard deviation: tsfreshValuesRangeCountMax1Min1100"                        
+ [70] "Removing feature with 0 standard deviation: tsfreshValuesRangeCountMax0Min10000000000000100"           
+ [71] "Removing feature with 0 standard deviation: tsfreshValuesRangeCountMax10000000000000Min0100"           
+ [72] "Removing feature with 0 standard deviation: tsfreshValuesAggLinearTrendAttrStderrChunkLen50fAggMax100" 
+ [73] "Removing feature with 0 standard deviation: tsfreshValuesAggLinearTrendAttrStderrChunkLen50fAggMin100" 
+ [74] "Removing feature with 0 standard deviation: tsfreshValuesAggLinearTrendAttrStderrChunkLen50fAggMean100"
+ [75] "Removing feature with 0 standard deviation: tsfreshValuesAggLinearTrendAttrStderrChunkLen50fAggVar100" 
+ [76] "Removing feature with 0 standard deviation: tsfreshValuesNumberCrossingmm0100"                         
+ [77] "Removing feature with 0 standard deviation: tsfreshValuesNumberCrossingmm1100"                         
+ [78] "Removing feature with 0 standard deviation: tsfreshValuesNumberCrossingmm1100"                         
+ [79] "Removing feature with 0 standard deviation: tsfreshValuesRatioBeyondrSigmar10100"                      
+ [80] "Removing feature with 0 standard deviation: tsfreshValuesCountabovet0100"                              
+ [81] "Removing feature with 0 standard deviation: tsfreshValuesCountBelowt0100"                              
+ [82] "Removing feature with 0 standard deviation: tSFEL0ECDF0400"                                            
+ [83] "Removing feature with 0 standard deviation: tSFEL0ECDF1400"                                            
+ [84] "Removing feature with 0 standard deviation: tSFEL0ECDF2400"                                            
+ [85] "Removing feature with 0 standard deviation: tSFEL0ECDF3400"                                            
+ [86] "Removing feature with 0 standard deviation: tSFEL0ECDF4400"                                            
+ [87] "Removing feature with 0 standard deviation: tSFEL0ECDF5400"                                            
+ [88] "Removing feature with 0 standard deviation: tSFEL0ECDF6400"                                            
+ [89] "Removing feature with 0 standard deviation: tSFEL0ECDF7400"                                            
+ [90] "Removing feature with 0 standard deviation: tSFEL0ECDF8400"                                            
+ [91] "Removing feature with 0 standard deviation: tSFEL0ECDF9400"                                            
+ [92] "Removing feature with 0 standard deviation: tSFEL0Histogram0400"                                       
+ [93] "Removing feature with 0 standard deviation: tSFEL0Histogram1400"                                       
+ [94] "Removing feature with 0 standard deviation: tSFEL0Histogram2400"                                       
+ [95] "Removing feature with 0 standard deviation: tSFEL0Histogram3400"                                       
+ [96] "Removing feature with 0 standard deviation: tSFEL0Histogram4400"                                       
+ [97] "Removing feature with 0 standard deviation: tSFEL0Histogram5400"                                       
+ [98] "Removing feature with 0 standard deviation: tSFEL0Histogram6400"                                       
+ [99] "Removing feature with 0 standard deviation: tSFEL0Histogram7400"                                       
+[100] "Removing feature with 0 standard deviation: tSFEL0Histogram8400"                                       
+[101] "Removing feature with 0 standard deviation: tSFEL0Histogram9400"                                       
+[102] "Removing feature with 0 standard deviation: tSFEL0MedianFrequency400"                                  
+[103] "Removing feature with 0 standard deviation: tSFEL0SpectralRollon400"                                   
+[104] "Removing feature with 0 standard deviation: tSFEL0ZeroCrossingRate400"                                 
+[105] "Removing feature with 0 standard deviation: tsfreshValuesHasDuplicate400"                              
+[106] "Removing feature with 0 standard deviation: tsfreshValuesLength400"                                    
+[107] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr00400"                        
+[108] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr030000000000000004400"        
+[109] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr035000000000000003400"        
+[110] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr04400"                        
+[111] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr045400"                       
+[112] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr05400"                        
+[113] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr055400"                       
+[114] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr06000000000000001400"         
+[115] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr065400"                       
+[116] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr07000000000000001400"         
+[117] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr075400"                       
+[118] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr08400"                        
+[119] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr08500000000000001400"         
+[120] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr09400"                        
+[121] "Removing feature with 0 standard deviation: tsfreshValuesSymmetryLookingr09500000000000001400"         
+[122] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr005400"                
+[123] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr04400"                 
+[124] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr045400"                
+[125] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr05400"                 
+[126] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr055400"                
+[127] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr06000000000000001400"  
+[128] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr065400"                
+[129] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr07000000000000001400"  
+[130] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr075400"                
+[131] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr08400"                 
+[132] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr08500000000000001400"  
+[133] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr09400"                 
+[134] "Removing feature with 0 standard deviation: tsfreshValuesLargeStandardDeviationr09500000000000001400"  
+[135] "Removing feature with 0 standard deviation: tsfreshValuesAutocorrelationLag0400"                       
+[136] "Removing feature with 0 standard deviation: tsfreshValuesPartialAutocorrelationLag0400"                
+[137] "Removing feature with 0 standard deviation: tsfreshValuesFftCoefficientAttrImagCoeff0400"              
+[138] "Removing feature with 0 standard deviation: tsfreshValuesFftCoefficientAttrAngleCoeff0400"             
+[139] "Removing feature with 0 standard deviation: tsfreshValuesValueCountValue0400"                          
+[140] "Removing feature with 0 standard deviation: tsfreshValuesValueCountValue1400"                          
+[141] "Removing feature with 0 standard deviation: tsfreshValuesValueCountValue1400"                          
+[142] "Removing feature with 0 standard deviation: tsfreshValuesRangeCountMax1Min1400"                        
+[143] "Removing feature with 0 standard deviation: tsfreshValuesRangeCountMax0Min10000000000000400"           
+[144] "Removing feature with 0 standard deviation: tsfreshValuesRangeCountMax10000000000000Min0400"           
+[145] "Removing feature with 0 standard deviation: tsfreshValuesNumberCrossingmm0400"                         
+[146] "Removing feature with 0 standard deviation: tsfreshValuesNumberCrossingmm1400"                         
+[147] "Removing feature with 0 standard deviation: tsfreshValuesNumberCrossingmm1400"                         
+[148] "Removing feature with 0 standard deviation: tsfreshValuesRatioBeyondrSigmar10400"                      
+[149] "Removing feature with 0 standard deviation: tsfreshValuesCountabovet0400"                              
+[150] "Removing feature with 0 standard deviation: tsfreshValuesCountBelowt0400"                              
+[151] "Removing feature with 0 standard deviation: nperiods100TRUE"                                           
+[152] "Removing feature with 0 standard deviation: seasonalPeriod100TRUE"                                     
+[153] "Removing feature with 0 standard deviation: nperiods400TRUE"                                           
+[154] "Removing feature with 0 standard deviation: seasonalPeriod400TRUE"                                     
+[155] "Removing feature with 0 standard deviation: sdasfdGPH05100"                                            
+[156] "Removing feature with 0 standard deviation: sdasfdSperio05100"                                         
+[157] "Removing feature with 0 standard deviation: sdasfdSperio09100"                                         
+[158] "Removing feature with 0 standard deviation: sdasfdGPH05400"                                            
+[159] "Removing feature with 0 standard deviation: sdasfdSperio05400"                                         
+[160] "Removing feature with 0 standard deviation: sdasfdSperio09400"                                         
+Written 59.0% of 114141 rows in 3 secs using 16 threads. maxBuffUsed=28%. ETA 2 secs.      Written 61.3% of 114141 rows in 4 secs using 16 threads. maxBuffUsed=28%. ETA 2 secs.      Written 67.4% of 114141 rows in 5 secs using 16 threads. maxBuffUsed=28%. ETA 2 secs.      Written 73.4% of 114141 rows in 6 secs using 16 threads. maxBuffUsed=28%. ETA 2 secs.      Written 79.5% of 114141 rows in 7 secs using 16 threads. maxBuffUsed=28%. ETA 1 secs.      Written 85.5% of 114141 rows in 8 secs using 16 threads. maxBuffUsed=28%. ETA 1 secs.      Written 90.8% of 114141 rows in 9 secs using 16 threads. maxBuffUsed=28%. ETA 0 secs.      Written 96.9% of 114141 rows in 10 secs using 16 threads. maxBuffUsed=28%. ETA 0 secs.                                                                                                                                           [1] TRUE
+[1] 1
+[1] "Prepare data"
+character(0)
+[1] "targetRet1"  "targetRet6"  "targetRet12"
+$outer
+<ResamplingCustom>: Custom Splits
+* Iterations: 183
+* Instantiated: TRUE
+* Parameters: list()
+
+$inner
+<ResamplingCustom>: Custom Splits
+* Iterations: 183
+* Instantiated: TRUE
+* Parameters: list()
+
+$outer
+<ResamplingCustom>: Custom Splits
+* Iterations: 173
+* Instantiated: TRUE
+* Parameters: list()
+
+$inner
+<ResamplingCustom>: Custom Splits
+* Iterations: 173
+* Instantiated: TRUE
+* Parameters: list()
+
+$outer
+<ResamplingCustom>: Custom Splits
+* Iterations: 161
+* Instantiated: TRUE
+* Parameters: list()
+
+$inner
+<ResamplingCustom>: Custom Splits
+* Iterations: 161
+* Instantiated: TRUE
+* Parameters: list()
+
+[1] "Create graph"
+[1] "Set threads"
+<GraphLearner:dropnacol.dropna.removeconstants_1.winsorizesimple.removeconstants_2.dropcorr.uniformization.dropna_v2.filterrows.branch.ranger.ranger.xgboost.xgboost.bart.bart.nnet.nnet.mlp.torch_ingress_num.tabnet.tabnet.mlp.nn_linear.mlp.nn_relu.mlp.nn_head.mlp.torch_loss.mlp.torch_optimizer.mlp.torch_callbacks.mlp.torch_model_regr.unbranch>
+* Model: -
+* Parameters: dropnacol.cutoff=0.05, removeconstants_1.ratio=0,
+  removeconstants_1.rel_tol=1e-08, removeconstants_1.abs_tol=1e-08,
+  removeconstants_1.na_ignore=TRUE, winsorizesimple.probs_low=0.01,
+  winsorizesimple.probs_high=0.99, winsorizesimple.na_rm=TRUE, winsorizesimple.qtype=7,
+  removeconstants_2.ratio=0, removeconstants_2.rel_tol=1e-08,
+  removeconstants_2.abs_tol=1e-08, removeconstants_2.na_ignore=TRUE,
+  dropcorr.use=everything, dropcorr.method=pearson, dropcorr.cutoff=0.99,
+  filterrows.filter_formula=<NULL>, filterrows.SDcols=<Selector>, filterrows.phase=always,
+  branch.selection=ranger, ranger.ranger.num.threads=2, xgboost.xgboost.nrounds=1,
+  xgboost.xgboost.nthread=2, xgboost.xgboost.verbose=0, bart.bart.nthread=2,
+  bart.bart.keeptrees=TRUE, nnet.nnet.MaxNWts=50000, nnet.nnet.size=3,
+  mlp.nn_linear.out_features=20, mlp.torch_optimizer.lr=0.1,
+  mlp.torch_model_regr.epochs=50, mlp.torch_model_regr.device=cpu,
+  mlp.torch_model_regr.num_threads=2, mlp.torch_model_regr.seed=random,
+  mlp.torch_model_regr.eval_freq=1, mlp.torch_model_regr.measures_train=<list>,
+  mlp.torch_model_regr.measures_valid=<list>, mlp.torch_model_regr.patience=0,
+  mlp.torch_model_regr.min_delta=0, mlp.torch_model_regr.batch_size=16,
+  tabnet.tabnet.num_threads=2, tabnet.tabnet.decision_width=8,
+  tabnet.tabnet.attention_width=8
+* Validate: NULL
+* Packages: mlr3, mlr3pipelines, mlr3learners, ranger, xgboost, mlr3extralearners, dbarts,
+  nnet, torch, mlr3torch, tabnet
+* Predict Types:  [response], se, distr
+* Feature Types: logical, integer, numeric, character, factor, ordered, POSIXct,
+  lazy_tensor
+* Properties: featureless, hotstart_backward, hotstart_forward, importance,
+  internal_tuning, loglik, marshal, missings, oob_error, selected_features, validation,
+  weights
+<GraphLearner:dropnacol.dropna.removeconstants_1.winsorizesimple.removeconstants_2.dropcorr.uniformization.dropna_v2.branch.ranger.ranger.xgboost.xgboost.bart.bart.nnet.nnet.mlp.torch_ingress_num.tabnet.tabnet.mlp.nn_linear.mlp.nn_relu.mlp.nn_head.mlp.torch_loss.mlp.torch_optimizer.mlp.torch_callbacks.mlp.torch_model_regr.unbranch>
+* Model: -
+* Parameters: dropnacol.cutoff=0.05, removeconstants_1.ratio=0,
+  removeconstants_1.rel_tol=1e-08, removeconstants_1.abs_tol=1e-08,
+  removeconstants_1.na_ignore=TRUE, winsorizesimple.probs_low=0.01,
+  winsorizesimple.probs_high=0.99, winsorizesimple.na_rm=TRUE, winsorizesimple.qtype=7,
+  removeconstants_2.ratio=0, removeconstants_2.rel_tol=1e-08,
+  removeconstants_2.abs_tol=1e-08, removeconstants_2.na_ignore=TRUE,
+  dropcorr.use=everything, dropcorr.method=pearson, dropcorr.cutoff=0.99,
+  branch.selection=ranger, ranger.ranger.num.threads=2, xgboost.xgboost.nrounds=1,
+  xgboost.xgboost.nthread=2, xgboost.xgboost.verbose=0, bart.bart.nthread=2,
+  bart.bart.keeptrees=TRUE, nnet.nnet.MaxNWts=50000, nnet.nnet.size=3,
+  mlp.nn_linear.out_features=20, mlp.torch_optimizer.lr=0.1,
+  mlp.torch_model_regr.epochs=50, mlp.torch_model_regr.device=cpu,
+  mlp.torch_model_regr.num_threads=2, mlp.torch_model_regr.seed=random,
+  mlp.torch_model_regr.eval_freq=1, mlp.torch_model_regr.measures_train=<list>,
+  mlp.torch_model_regr.measures_valid=<list>, mlp.torch_model_regr.patience=0,
+  mlp.torch_model_regr.min_delta=0, mlp.torch_model_regr.batch_size=16,
+  tabnet.tabnet.num_threads=2, tabnet.tabnet.decision_width=8,
+  tabnet.tabnet.attention_width=8
+* Validate: NULL
+* Packages: mlr3, mlr3pipelines, mlr3learners, ranger, xgboost, mlr3extralearners, dbarts,
+  nnet, torch, mlr3torch, tabnet
+* Predict Types:  [response], se, distr
+* Feature Types: logical, integer, numeric, character, factor, ordered, POSIXct,
+  lazy_tensor
+* Properties: featureless, hotstart_backward, hotstart_forward, importance,
+  internal_tuning, loglik, marshal, missings, oob_error, selected_features, validation,
+  weights
+                                       id    class lower upper
+                                   <char>   <char> <num> <num>
+  1:                     dropnacol.cutoff ParamDbl     0 1e+00
+  2:             dropnacol.affect_columns ParamUty    NA    NA
+  3:                dropna.affect_columns ParamUty    NA    NA
+  4:              removeconstants_1.ratio ParamDbl     0 1e+00
+  5:            removeconstants_1.rel_tol ParamDbl     0   Inf
+ ---                                                          
+217:               tabnet.tabnet.momentum ParamDbl     0 1e+00
+218:      tabnet.tabnet.pretraining_ratio ParamDbl     0 1e+00
+219:                tabnet.tabnet.verbose ParamLgl    NA    NA
+220:                 tabnet.tabnet.device ParamFct    NA    NA
+221: tabnet.tabnet.importance_sample_size ParamInt     0 1e+05
+                                              id    class lower upper
+                                          <char>   <char> <num> <num>
+  1:                            dropnacol.cutoff ParamDbl     0     1
+  2:                    dropnacol.affect_columns ParamUty    NA    NA
+  3:                       dropna.affect_columns ParamUty    NA    NA
+  4:                     removeconstants_1.ratio ParamDbl     0     1
+  5:                   removeconstants_1.rel_tol ParamDbl     0   Inf
+  6:                   removeconstants_1.abs_tol ParamDbl     0   Inf
+  7:                 removeconstants_1.na_ignore ParamLgl    NA    NA
+  8:            removeconstants_1.affect_columns ParamUty    NA    NA
+  9:                   winsorizesimple.probs_low ParamDbl     0     1
+ 10:                  winsorizesimple.probs_high ParamDbl     0     1
+ 11:                       winsorizesimple.na_rm ParamLgl    NA    NA
+ 12:                       winsorizesimple.qtype ParamInt     1     9
+ 13:              winsorizesimple.affect_columns ParamUty    NA    NA
+ 14:                     removeconstants_2.ratio ParamDbl     0     1
+ 15:                   removeconstants_2.rel_tol ParamDbl     0   Inf
+ 16:                   removeconstants_2.abs_tol ParamDbl     0   Inf
+ 17:                 removeconstants_2.na_ignore ParamLgl    NA    NA
+ 18:            removeconstants_2.affect_columns ParamUty    NA    NA
+ 19:                                dropcorr.use ParamFct    NA    NA
+ 20:                             dropcorr.method ParamFct    NA    NA
+ 21:                             dropcorr.cutoff ParamDbl     0     1
+ 22:                     dropcorr.affect_columns ParamUty    NA    NA
+ 23:               uniformization.affect_columns ParamUty    NA    NA
+ 24:                    dropna_v2.affect_columns ParamUty    NA    NA
+ 25:                   filterrows.filter_formula ParamUty    NA    NA
+ 26:                           filterrows.SDcols ParamUty    NA    NA
+ 27:                            filterrows.phase ParamFct    NA    NA
+ 28:                   filterrows.affect_columns ParamUty    NA    NA
+ 29:                            branch.selection ParamFct    NA    NA
+ 30:                         ranger.ranger.alpha ParamDbl  -Inf   Inf
+ 31:        ranger.ranger.always.split.variables ParamUty    NA    NA
+ 32:                       ranger.ranger.holdout ParamLgl    NA    NA
+ 33:                    ranger.ranger.importance ParamFct    NA    NA
+ 34:                    ranger.ranger.keep.inbag ParamLgl    NA    NA
+ 35:                     ranger.ranger.max.depth ParamInt     0   Inf
+ 36:                    ranger.ranger.min.bucket ParamInt     1   Inf
+ 37:                 ranger.ranger.min.node.size ParamInt     1   Inf
+ 38:                       ranger.ranger.minprop ParamDbl  -Inf   Inf
+ 39:                          ranger.ranger.mtry ParamInt     1   Inf
+ 40:                    ranger.ranger.mtry.ratio ParamDbl     0     1
+ 41:                    ranger.ranger.node.stats ParamLgl    NA    NA
+ 42:             ranger.ranger.num.random.splits ParamInt     1   Inf
+ 43:                   ranger.ranger.num.threads ParamInt     1   Inf
+ 44:                     ranger.ranger.num.trees ParamInt     1   Inf
+ 45:                     ranger.ranger.oob.error ParamLgl    NA    NA
+ 46:                      ranger.ranger.quantreg ParamLgl    NA    NA
+ 47:         ranger.ranger.regularization.factor ParamUty    NA    NA
+ 48:       ranger.ranger.regularization.usedepth ParamLgl    NA    NA
+ 49:                       ranger.ranger.replace ParamLgl    NA    NA
+ 50:     ranger.ranger.respect.unordered.factors ParamFct    NA    NA
+ 51:               ranger.ranger.sample.fraction ParamDbl     0     1
+ 52:                   ranger.ranger.save.memory ParamLgl    NA    NA
+ 53:  ranger.ranger.scale.permutation.importance ParamLgl    NA    NA
+ 54:                     ranger.ranger.se.method ParamFct    NA    NA
+ 55:                          ranger.ranger.seed ParamInt  -Inf   Inf
+ 56:          ranger.ranger.split.select.weights ParamUty    NA    NA
+ 57:                     ranger.ranger.splitrule ParamFct    NA    NA
+ 58:                       ranger.ranger.verbose ParamLgl    NA    NA
+ 59:                  ranger.ranger.write.forest ParamLgl    NA    NA
+ 60:                       xgboost.xgboost.alpha ParamDbl     0   Inf
+ 61:               xgboost.xgboost.approxcontrib ParamLgl    NA    NA
+ 62:                  xgboost.xgboost.base_score ParamDbl  -Inf   Inf
+ 63:                     xgboost.xgboost.booster ParamFct    NA    NA
+ 64:                   xgboost.xgboost.callbacks ParamUty    NA    NA
+ 65:           xgboost.xgboost.colsample_bylevel ParamDbl     0     1
+ 66:            xgboost.xgboost.colsample_bynode ParamDbl     0     1
+ 67:            xgboost.xgboost.colsample_bytree ParamDbl     0     1
+ 68:                      xgboost.xgboost.device ParamUty    NA    NA
+ 69: xgboost.xgboost.disable_default_eval_metric ParamLgl    NA    NA
+ 70:       xgboost.xgboost.early_stopping_rounds ParamInt     1   Inf
+ 71:                         xgboost.xgboost.eta ParamDbl     0     1
+ 72:                 xgboost.xgboost.eval_metric ParamUty    NA    NA
+ 73:            xgboost.xgboost.feature_selector ParamFct    NA    NA
+ 74:                       xgboost.xgboost.feval ParamUty    NA    NA
+ 75:                       xgboost.xgboost.gamma ParamDbl     0   Inf
+ 76:                 xgboost.xgboost.grow_policy ParamFct    NA    NA
+ 77:     xgboost.xgboost.interaction_constraints ParamUty    NA    NA
+ 78:              xgboost.xgboost.iterationrange ParamUty    NA    NA
+ 79:                      xgboost.xgboost.lambda ParamDbl     0   Inf
+ 80:                 xgboost.xgboost.lambda_bias ParamDbl     0   Inf
+ 81:                     xgboost.xgboost.max_bin ParamInt     2   Inf
+ 82:              xgboost.xgboost.max_delta_step ParamDbl     0   Inf
+ 83:                   xgboost.xgboost.max_depth ParamInt     0   Inf
+ 84:                  xgboost.xgboost.max_leaves ParamInt     0   Inf
+ 85:                    xgboost.xgboost.maximize ParamLgl    NA    NA
+ 86:            xgboost.xgboost.min_child_weight ParamDbl     0   Inf
+ 87:                     xgboost.xgboost.missing ParamDbl  -Inf   Inf
+ 88:        xgboost.xgboost.monotone_constraints ParamUty    NA    NA
+ 89:              xgboost.xgboost.normalize_type ParamFct    NA    NA
+ 90:                     xgboost.xgboost.nrounds ParamInt     1   Inf
+ 91:                     xgboost.xgboost.nthread ParamInt     1   Inf
+ 92:                  xgboost.xgboost.ntreelimit ParamInt     1   Inf
+ 93:           xgboost.xgboost.num_parallel_tree ParamInt     1   Inf
+ 94:                   xgboost.xgboost.objective ParamUty    NA    NA
+ 95:                    xgboost.xgboost.one_drop ParamLgl    NA    NA
+ 96:                xgboost.xgboost.outputmargin ParamLgl    NA    NA
+ 97:                 xgboost.xgboost.predcontrib ParamLgl    NA    NA
+ 98:             xgboost.xgboost.predinteraction ParamLgl    NA    NA
+ 99:                    xgboost.xgboost.predleaf ParamLgl    NA    NA
+100:               xgboost.xgboost.print_every_n ParamInt     1   Inf
+                                              id    class lower upper
+[1] "eventVol1001" "eventVol1002" "eventVol1003" "eventVol4501" "eventVol4502" "eventVol4503"
+[1] "Create designs"
+Number of iterations fo cv inner is  183 
+[1] "task_targetRet1-inner"
+[1] "task_targetRet1-inner"
+[1] 0
+[1] "Create registry"
+[1] "Batchmark"
+[1] "Save registry"
+[1] TRUE
+### [bt]: Generating problem instance for problem '7f5ec916207f17e0' ...
+### [bt]: Applying algorithm 'run_learner' on problem '7f5ec916207f17e0' for job 1 (seed = 2) ...
+INFO  [14:21:03.009] [mlr3] Applying learner 'dropnacol.dropna.removeconstants_1.winsorizesimple.removeconstants_2.dropcorr.uniformization.dropna_v2.filterrows.branch.ranger.ranger.xgboost.xgboost.bart.bart.nnet.nnet.mlp.torch_ingress_num.tabnet.tabnet.mlp.nn_linear.mlp.nn_relu.mlp.nn_head.mlp.torch_loss.mlp.torch_optimizer.mlp.torch_callbacks.mlp.torch_model_regr.unbranch.tuned' on task 'task_targetRet1' (iter 1/1)
+INFO  [14:21:07.817] [bbotk] Starting to optimize 2 parameter(s) with '<OptimizerBatchGridSearch>' and '<TerminatorNone>'
+INFO  [14:21:07.850] [bbotk] Evaluating 2 configuration(s)
+INFO  [14:21:07.911] [mlr3] Running benchmark with 2 resampling iterations
+INFO  [14:21:07.922] [mlr3] Applying learner 'dropnacol.dropna.removeconstants_1.winsorizesimple.removeconstants_2.dropcorr.uniformization.dropna_v2.filterrows.branch.ranger.ranger.xgboost.xgboost.bart.bart.nnet.nnet.mlp.torch_ingress_num.tabnet.tabnet.mlp.nn_linear.mlp.nn_relu.mlp.nn_head.mlp.torch_loss.mlp.torch_optimizer.mlp.torch_callbacks.mlp.torch_model_regr.unbranch' on task 'task_targetRet1' (iter 1/1)
+99: (function (e) 
+    traceback(2L))()
+98: stopifnot(is.numeric(digits), digits >= 1)
+97: quantile.default(X[[i]], ...)
+96: FUN(X[[i]], ...)
+95: lapply(.SD, quantile, probs = c(pv$probs_low, pv$probs_high), 
+        na.rm = pv$na_rm, type = pv$qtype)
+94: eval(jsub, SDenv, parent.frame())
+93: eval(jsub, SDenv, parent.frame())
+92: `[.data.table`(dt, , lapply(.SD, quantile, probs = c(pv$probs_low, 
+        pv$probs_high), na.rm = pv$na_rm, type = pv$qtype)) at PipeOpWinsorizeSimple.R#36
+91: dt[, lapply(.SD, quantile, probs = c(pv$probs_low, pv$probs_high), 
+        na.rm = pv$na_rm, type = pv$qtype)] at PipeOpWinsorizeSimple.R#36
+90: private$.get_state_dt(dt, task$levels(cols), task$truth())
+89: .__PipeOpTaskPreprocSimple__.get_state(self = self, private = private, 
+        super = super, task = task)
+88: private$.get_state(task)
+87: .__PipeOpTaskPreprocSimple__.train_task(self = self, private = private, 
+        super = super, task = task)
+86: private$.train_task(intask)
+85: .__PipeOpTaskPreproc__.train(self = self, private = private, 
+        super = super, inputs = inputs)
+84: private$.train(input)
+83: withCallingHandlers({
+        output = private$.train(input)
+    }, error = function(e) {
+        e$message = sprintf("%s\nThis happened PipeOp %s's $train()", 
+            e$message, self$id)
+        stop(e)
+    }, warning = function(w) {
+        w$message = sprintf("%s\nThis happened PipeOp %s's $train()", 
+            w$message, self$id)
+        warning(w)
+        invokeRestart("muffleWarning")
+    })
+82: .__PipeOp__train(self = self, private = private, super = super, 
+        input = input)
+81: op[[fun]](input)
+80: graph_reduce(self, input, "train", single_input)
+79: .__Graph__train(self = self, private = private, super = super, 
+        input = input, single_input = single_input)
+78: self$graph$train(task)
+77: .__GraphLearner__.train(self = self, private = private, super = super, 
+        task = task)
+76: get_private(learner)$.train(task)
+75: .f(learner = <environment>, task = <environment>)
+74: eval(expr, p)
+73: eval(expr, p)
+72: eval.parent(expr, n = 1L)
+71: invoke(.f, .args = .args, .opts = .opts, .seed = .seed, .timeout = .timeout)
+70: encapsulate(learner$encapsulate["train"], .f = train_wrapper, 
+        .args = list(learner = learner, task = task), .pkgs = learner$packages, 
+        .seed = NA_integer_, .timeout = learner$timeout["train"])
+69: learner_train(learner, task, sets[["train"]], test_set, mode = mode)
+68: ...future.FUN(...)
+67: (function (..., ...future.seeds_ii_jj) 
+    {
+        assign(".Random.seed", ...future.seeds_ii_jj, envir = globalenv(), 
+            inherits = FALSE)
+        ...future.FUN(...)
+    })(task = dots[[1L]][[1L]], learner = dots[[2L]][[1L]], resampling = dots[[3L]][[1L]], 
+        iteration = dots[[4L]][[1L]], param_values = dots[[5L]][[1L]], 
+        mode = dots[[6L]][[1L]], ...future.seeds_ii_jj = dots[[7L]][[1L]], 
+        store_models = FALSE, lgr_threshold = c(mlr3 = 400L, bbotk = 400L
+        ), pb = NULL, unmarshal = TRUE, is_sequential = TRUE)
+66: (function (FUN, ..., MoreArgs = NULL, SIMPLIFY = TRUE, USE.NAMES = TRUE) 
+    {
+        FUN <- match.fun(FUN)
+        dots <- list(...)
+        answer <- .Internal(mapply(FUN, dots, MoreArgs))
+        if (USE.NAMES && length(dots)) {
+            if (is.null(names1 <- names(dots[[1L]])) && is.character(dots[[1L]])) 
+                names(answer) <- if (length(answer)) 
+                    dots[[1L]]
+                else character()
+            else if (!is.null(names1)) 
+                names(answer) <- names1
+        }
+        if (!isFALSE(SIMPLIFY)) 
+            simplify2array(answer, higher = (SIMPLIFY == "array"))
+        else answer
+    })(FUN = function (..., ...future.seeds_ii_jj) 
+    {
+        assign(".Random.seed", ...future.seeds_ii_jj, envir = globalenv(), 
+            inherits = FALSE)
+     ...
+65: do.call(mapply, args = args)
+64: eval(quote({
+        ...future.globals.maxSize.org <- getOption("future.globals.maxSize")
+        if (!identical(...future.globals.maxSize.org, ...future.globals.maxSize)) {
+            oopts <- options(future.globals.maxSize = ...future.globals.maxSize)
+            on.exit(options(oopts), add = TRUE)
+        }
+        {
+            ...future.FUN2 <- function(..., ...future.seeds_ii_jj) {
+                assign(".Random.seed", ...future.seeds_ii_jj, envir = globalenv(), 
+                    inherits = FALSE)
+                ...future.FUN(...)
+            }
+            args <- c(list(FUN = ...future.FUN2), ...future.elements_ii, 
+                list(...future.seeds_ii_jj = ...future.seeds_ii), 
+                MoreArgs = list(MoreArgs), SIMPLIFY = FALSE, USE.NAMES = FALSE)
+            do.call(mapply, args = args)
+        }
+    }), new.env())
+63: eval(quote({
+        ...future.globals.maxSize.org <- getOption("future.globals.maxSize")
+        if (!identical(...future.globals.maxSize.org, ...future.globals.maxSize)) {
+            oopts <- options(future.globals.maxSize = ...future.globals.maxSize)
+            on.exit(options(oopts), add = TRUE)
+        }
+        {
+            ...future.FUN2 <- function(..., ...future.seeds_ii_jj) {
+                assign(".Random.seed", ...future.seeds_ii_jj, envir = globalenv(), 
+                    inherits = FALSE)
+                ...future.FUN(...)
+            }
+            args <- c(list(FUN = ...future.FUN2), ...future.elements_ii, 
+                list(...future.seeds_ii_jj = ...future.seeds_ii), 
+                MoreArgs = list(MoreArgs), SIMPLIFY = FALSE, USE.NAMES = FALSE)
+            do.call(mapply, args = args)
+        }
+    }), new.env())
+62: eval(expr, p)
+61: eval(expr, p)
+60: eval.parent(substitute(eval(quote(expr), envir)))
+59: base::local({
+        ...future.globals.maxSize.org <- getOption("future.globals.maxSize")
+        if (!identical(...future.globals.maxSize.org, ...future.globals.maxSize)) {
+            oopts <- options(future.globals.maxSize = ...future.globals.maxSize)
+            on.exit(options(oopts), add = TRUE)
+        }
+        {
+            ...future.FUN2 <- function(..., ...future.seeds_ii_jj) {
+                assign(".Random.seed", ...future.seeds_ii_jj, envir = globalenv(), 
+                    inherits = FALSE)
+                ...future.FUN(...)
+            }
+            args <- c(list(FUN = ...future.FUN2), ...future.elements_ii, 
+                list(...future.seeds_ii_jj = ...future.seeds_ii), 
+                MoreArgs = list(MoreArgs), SIMPLIFY = FALSE, USE.NAMES = FALSE)
+            do.call(mapply, args = args)
+        }
+    })
+58: base::withVisible(base::local({
+        ...future.globals.maxSize.org <- getOption("future.globals.maxSize")
+        if (!identical(...future.globals.maxSize.org, ...future.globals.maxSize)) {
+            oopts <- options(future.globals.maxSize = ...future.globals.maxSize)
+            on.exit(options(oopts), add = TRUE)
+        }
+        {
+            ...future.FUN2 <- function(..., ...future.seeds_ii_jj) {
+                assign(".Random.seed", ...future.seeds_ii_jj, envir = globalenv(), 
+                    inherits = FALSE)
+                ...future.FUN(...)
+            }
+            args <- c(list(FUN = ...future.FUN2), ...future.elements_ii, 
+                list(...future.seeds_ii_jj = ...future.seeds_ii), 
+                MoreArgs = list(MoreArgs), SIMPLIFY = FALSE, USE.NAMES = FALSE)
+            do.call(mapply, args = args)
+        }
+    }))
+57: base::withCallingHandlers({
+        ...future.value <- base::withVisible(base::local({
+            ...future.globals.maxSize.org <- getOption("future.globals.maxSize")
+            if (!identical(...future.globals.maxSize.org, ...future.globals.maxSize)) {
+                oopts <- options(future.globals.maxSize = ...future.globals.maxSize)
+                on.exit(options(oopts), add = TRUE)
+            }
+            {
+                ...future.FUN2 <- function(..., ...future.seeds_ii_jj) {
+                    assign(".Random.seed", ...future.seeds_ii_jj, 
+                      envir = globalenv(), inherits = FALSE)
+                    ...future.FUN(...)
+                }
+                args <- c(list(FUN = ...future.FUN2), ...future.elements_ii, 
+                    list(...future.seeds_ii_jj = ...future.seeds_ii), 
+                    MoreArgs = list(MoreArgs), SIMPLIFY = FALSE, 
+                    USE.NAMES = FALSE)
+                do.call(mapply, args = args)
+            }
+        }))
+     ...
+56: doTryCatch(return(expr), name, parentenv, handler)
+55: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+54: tryCatchList(expr, classes, parentenv, handlers)
+53: base::tryCatch({
+        base::withCallingHandlers({
+            ...future.value <- base::withVisible(base::local({
+                ...future.globals.maxSize.org <- getOption("future.globals.maxSize")
+                if (!identical(...future.globals.maxSize.org, ...future.globals.maxSize)) {
+                    oopts <- options(future.globals.maxSize = ...future.globals.maxSize)
+                    on.exit(options(oopts), add = TRUE)
+                }
+                {
+                    ...future.FUN2 <- function(..., ...future.seeds_ii_jj) {
+                      assign(".Random.seed", ...future.seeds_ii_jj, 
+                        envir = globalenv(), inherits = FALSE)
+                      ...future.FUN(...)
+                    }
+                    args <- c(list(FUN = ...future.FUN2), ...future.elements_ii, 
+                      list(...future.seeds_ii_jj = ...future.seeds_ii), 
+                      MoreArgs = list(MoreArgs), SIMPLIFY = FALSE, 
+                      USE.NAMES = FALSE)
+                    do.call(mapply, args = args)
+                }
+     ...
+52: eval(expr, envir = envir, enclos = baseenv())
+51: eval(expr, envir = envir, enclos = baseenv())
+50: run.UniprocessFuture(future)
+49: run(future)
+48: run.Future(future)
+47: run(future)
+46: future(expr, substitute = FALSE, envir = future.envir, stdout = future.stdout, 
+        conditions = future.conditions, globals = globals_ii, packages = packages_ii, 
+        seed = future.seed, label = labels[ii])
+45: future_xapply(FUN = FUN, nX = nX, chunk_args = dots, MoreArgs = MoreArgs, 
+        get_chunk = function(X, chunk) lapply(X, FUN = `chunkWith[[`, 
+            chunk), expr = expr, envir = envir, future.envir = future.envir, 
+        future.globals = future.globals, future.packages = future.packages, 
+        future.scheduling = future.scheduling, future.chunk.size = future.chunk.size, 
+        future.stdout = future.stdout, future.conditions = future.conditions, 
+        future.seed = future.seed, future.label = future.label, fcn_name = fcn_name, 
+        args_name = args_name, debug = debug)
+44: future.apply::future_mapply(FUN, ..., MoreArgs = MoreArgs, SIMPLIFY = FALSE, 
+        USE.NAMES = FALSE, future.globals = FALSE, future.packages = "mlr3", 
+        future.seed = TRUE, future.scheduling = scheduling, future.chunk.size = chunk_size, 
+        future.stdout = stdout)
+43: future_map(n, workhorse, task = grid$task, learner = grid$learner, 
+        resampling = grid$resampling, iteration = grid$iteration, 
+        param_values = grid$param_values, mode = grid$mode, MoreArgs = list(store_models = store_models, 
+            lgr_threshold = lgr_threshold, pb = pb, unmarshal = unmarshal))
+42: benchmark(design = private$.design, store_models = self$store_models, 
+        clone = character(0))
+41: .__ObjectiveTuningBatch__.eval_many(self = self, private = private, 
+        super = super, xss = xss, resampling = resampling)
+40: private$.eval_many(xss, resampling = list(<environment>))
+39: eval(expr, p)
+38: eval(expr, p)
+37: eval.parent(expr, n = 1L)
+36: invoke(private$.eval_many, xss, .args = self$constants$values)
+35: .__Objective__eval_many(self = self, private = private, super = super, 
+        xss = xss)
+34: self$objective$eval_many(xss_trafoed)
+33: .__OptimInstanceBatch__eval_batch(self = self, private = private, 
+        super = super, xdt = xdt)
+32: inst$eval_batch(g$data[inds])
+31: .__OptimizerBatchGridSearch__.optimize(self = self, private = private, 
+        super = super, inst = inst)
+30: get_private(optimizer)$.optimize(instance)
+29: doTryCatch(return(expr), name, parentenv, handler)
+28: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+27: tryCatchList(expr, classes, parentenv, handlers)
+26: tryCatch({
+        get_private(optimizer)$.optimize(instance)
+    }, terminated_error = function(cond) {
+    })
+25: optimize_batch_default(inst, self)
+24: .__OptimizerBatch__optimize(self = self, private = private, super = super, 
+        inst = inst)
+23: private$.optimizer$optimize(inst)
+22: .__TunerBatchFromOptimizerBatch__optimize(self = self, private = private, 
+        super = super, inst = inst)
+21: self$tuner$optimize(instance)
+20: .__AutoTuner__.train(self = self, private = private, super = super, 
+        task = task)
+19: get_private(learner)$.train(task)
+18: .f(learner = <environment>, task = <environment>)
+17: eval(expr, p)
+16: eval(expr, p)
+15: eval.parent(expr, n = 1L)
+14: invoke(.f, .args = .args, .opts = .opts, .seed = .seed, .timeout = .timeout)
+13: encapsulate(learner$encapsulate["train"], .f = train_wrapper, 
+        .args = list(learner = learner, task = task), .pkgs = learner$packages, 
+        .seed = NA_integer_, .timeout = learner$timeout["train"])
+12: learner_train(learner, task, sets[["train"]], test_set, mode = mode)
+11: workhorse(iteration = job$repl, task = data, learner = learner, 
+        resampling = resampling, store_models = store_models, lgr_threshold = lgr::get_logger("mlr3")$threshold)
+10: job$algorithm$fun(job = job, data = job$problem$data, instance = instance, 
+        ...)
+9: (function (...) 
+   job$algorithm$fun(job = job, data = job$problem$data, instance = instance, 
+       ...))(learner_hash = "004fb53b25aa4463", learner_id = "dropnacol.dropna.removeconstants_1.winsorizesimple.removeconstants_2.dropcorr.uniformization.dropna_v2.filterrows.branch.ranger.ranger.xgboost.xgboost.bart.bart.nnet.nnet.mlp.torch_ingress_num.tabnet.tabnet.mlp.nn_linear.mlp.nn_relu.mlp.nn_head.mlp.torch_loss.mlp.torch_optimizer.mlp.torch_callbacks.mlp.torch_model_regr.unbranch.tuned", 
+       store_models = TRUE)
+8: do.call(wrapper, job$algo.pars, envir = .GlobalEnv)
+7: with_preserve_seed({
+       set_seed(list(seed = seed, rng_kind = rng_kind))
+       code
+   })
+6: with_seed(job$seed, do.call(wrapper, job$algo.pars, envir = .GlobalEnv))
+5: execJob.Experiment(job = makeJob(id, reg = reg))
+4: execJob(job = makeJob(id, reg = reg))
+3: force(code)
+2: with_dir(reg$work.dir, {
+       loadRegistryDependencies(reg, must.work = TRUE)
+       execJob(job = makeJob(id, reg = reg))
+   })
+1: batchtools::testJob(1, reg = reg) at #2
+### [bt]: Generating problem instance for problem '7f5ec916207f17e0' ...
+### [bt]: Applying algorithm 'run_learner' on problem '7f5ec916207f17e0' for job 1 (seed = 2) ...
+INFO  [14:43:41.365] [mlr3] Applying learner 'dropnacol.dropna.removeconstants_1.winsorizesimple.removeconstants_2.dropcorr.uniformization.dropna_v2.filterrows.branch.ranger.ranger.xgboost.xgboost.bart.bart.nnet.nnet.mlp.torch_ingress_num.tabnet.tabnet.mlp.nn_linear.mlp.nn_relu.mlp.nn_head.mlp.torch_loss.mlp.torch_optimizer.mlp.torch_callbacks.mlp.torch_model_regr.unbranch.tuned' on task 'task_targetRet1' (iter 1/1)
+INFO  [14:43:41.885] [bbotk] Starting to optimize 2 parameter(s) with '<OptimizerBatchGridSearch>' and '<TerminatorNone>'
+INFO  [14:43:41.924] [bbotk] Evaluating 2 configuration(s)
+INFO  [14:43:42.034] [mlr3] Running benchmark with 2 resampling iterations
+INFO  [14:43:42.044] [mlr3] Applying learner 'dropnacol.dropna.removeconstants_1.winsorizesimple.removeconstants_2.dropcorr.uniformization.dropna_v2.filterrows.branch.ranger.ranger.xgboost.xgboost.bart.bart.nnet.nnet.mlp.torch_ingress_num.tabnet.tabnet.mlp.nn_linear.mlp.nn_relu.mlp.nn_head.mlp.torch_loss.mlp.torch_optimizer.mlp.torch_callbacks.mlp.torch_model_regr.unbranch' on task 'task_targetRet1' (iter 1/1)

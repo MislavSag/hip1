@@ -1,12 +1,19 @@
 library(data.table)
 library(mlr3)
 library(mlr3learners)
-# library(AzureStor)
+library(mlr3pipelines)
 library(lubridate)
 library(mlr3verse)
 library(future.apply)
 library(batchtools)
 library(mlr3batchmark)
+library(finautoml)
+library(paradox)
+library(mlr3extralearners)
+library(batchtools)
+library(mlr3batchmark)
+library(torch)
+library(mlr3torch)
 
 
 # COMMAND LINE ARGUMENTS --------------------------------------------------
@@ -25,6 +32,9 @@ if (interactive()) {
   cat(args, sep = "\n")
   LIVE = as.logical(as.integer(args[1]))
   cat("Argument 1 is ", LIVE)
+  
+  # Nuber of cores used in learning
+  ncores = 8
 }
 
 
@@ -41,6 +51,10 @@ diff_in_weeks = function(d1, d2) difftime(d2, d1, units = "weeks") # weeks
 # key = "0M4WRlV0/1b6b3ZpFKJvevg4xbC/gaNBcdtVZW+zOZcRi0ZLfOm1v/j2FZ4v+o8lycJLu1wVE6HT+ASt0DdAPQ=="
 # BLOBENDPOINT = storage_endpoint(endpoint, key=key)
 # cont = storage_container(BLOBENDPOINT, "jphd")
+
+# Check cuda
+cuda_is_available()
+cuda_device_count()
 
 
 # PREPARE DATA ------------------------------------------------------------
@@ -206,11 +220,11 @@ create_custom_rolling_windows = function(task,
 
 # simplifed cv functoin
 task_check = function(task) {
-  if (grepl("1", task$id)) {
+  if (grepl("1$", task$id)) {
     return(1)
-  } else if (grepl("6", task$id)) {
+  } else if (grepl("6$", task$id)) {
     return(6)
-  } else if (grepl("12", task$id)) {
+  } else if (grepl("12$", task$id)) {
     return(12)
   }
 }
@@ -219,7 +233,7 @@ cv_split = function(task) {
     task = task$clone(),
     duration_unit = "week",
     train_duration = 52*2,
-    gap_duration = 1,
+    gap_duration = task_check(task$clone()),
     tune_duration = 4*3,
     test_duration = 1
   )
@@ -279,432 +293,160 @@ mlr_pipeops$add("dropna", finautoml::PipeOpDropNA)
 mlr_pipeops$add("dropnacol", finautoml::PipeOpDropNACol)
 mlr_pipeops$add("dropcorr", finautoml::PipeOpDropCorr)
 # mlr_pipeops$add("pca_explained", PipeOpPCAExplained)
+mlr_pipeops$add("filter_rows", finautoml::PipeOpFilterRows)
 mlr_pipeops$add("filter_target", finautoml::PipeOpFilterRegrTarget)
 mlr_filters$add("gausscov_f1st", finautoml::FilterGausscovF1st)
 # mlr_filters$add("gausscov_f3st", FilterGausscovF3st)
 mlr_measures$add("linex", finautoml::Linex)
 mlr_measures$add("adjloss2", finautoml::AdjLoss2)
+# learners - THIS IS TEMPORARY, IT WILL BE ADDED TO EXTRALEARNERS
+source("regr_tabnet.R")
+mlr_learners$add("regr_tabnet", LearnerRegrTabNet)
 
-# graph templates
-gr = gunion(list(
-  po("nop", id = "nop_union_pca"),
-  po("pca", center = FALSE, rank. = 50),
-  po("ica", n.comp = 10)
-  # po("ica", n.comp = 10) # Error in fastICA::fastICA(as.matrix(dt), n.comp = 10L, method = "C") : data must be matrix-conformal This happened PipeOp ica's $train()
-)) %>>% po("featureunion", id = "feature_union_pca")
-filter_target_gr = po("branch",
-                      options = c("nop_filter_target", "filter_target_select"),
-                      id = "filter_target_branch") %>>%
-  gunion(list(
-    po("nop", id = "nop_filter_target"),
-    po("filter_target", id = "filter_target_id")
-  )) %>>%
-  po("unbranch", id = "filter_target_unbranch")
-# create mlr3 graph that takes 3 filters and union predictors from them
-filters_ = list(
-  po("filter", flt("disr"), filter.nfeat = 5),
-  po("filter", flt("jmim"), filter.nfeat = 5),
-  po("filter", flt("jmi"), filter.nfeat = 5),
-  po("filter", flt("mim"), filter.nfeat = 5),
-  po("filter", flt("mrmr"), filter.nfeat = 5),
-  po("filter", flt("njmim"), filter.nfeat = 5),
-  po("filter", flt("cmim"), filter.nfeat = 5),
-  po("filter", flt("carscore"), filter.nfeat = 5), # UNCOMMENT LATER< SLOWER SO COMMENTED FOR DEVELOPING
-  po("filter", flt("information_gain"), filter.nfeat = 5),
-  po("filter", filter = flt("relief"), filter.nfeat = 5),
-  po("filter", filter = flt("gausscov_f1st"), p0 = 0.05, filter.cutoff = 0)
-  # po("filter", mlr3filters::flt("importance", learner = mlr3::lrn("classif.rpart")), filter.nfeat = 10, id = "importance_1"),
-  # po("filter", mlr3filters::flt("importance", learner = lrn), filter.nfeat = 10, id = "importance_2")
+
+# LEARNERS ----------------------------------------------------------------
+print("Create graph")
+
+# test MLP learner
+mlp_graph = po("torch_ingress_num") %>>%
+  po("nn_linear", out_features = 20) %>>%
+  po("nn_relu") %>>%
+  po("nn_head") %>>%
+  po("torch_loss", loss = t_loss("mse")) %>>%
+  po("torch_optimizer", optimizer = t_opt("adam", lr = 0.1)) %>>%
+  po("torch_callbacks", callbacks = t_clbk("history")) %>>%
+  po("torch_model_regr", batch_size = 16, epochs = 50, device = "cpu")
+
+# cretate learners graph node
+learners_l = list(
+  ranger  = lrn("regr.ranger", id = "ranger"),
+  xgboost = lrn("regr.xgboost", id = "xgboost"),
+  bart    = lrn("regr.bart", id = "bart"),
+  nnet    = lrn("regr.nnet", id = "nnet", MaxNWts = 50000),
+  mlp     = mlp_graph,
+  tabnet  = lrn("regr_tabnet", id = "tabnet")
 )
-graph_filters = gunion(filters_) %>>%
-  po("featureunion", length(filters_), id = "feature_union_filters")
 
-graph_template =
-  filter_target_gr %>>%
-  po("subsample") %>>% # uncomment this for hyperparameter tuning
+# create regression average of all learners
+choices = c("ranger", "xgboost", "bart", "nnet", "mlp", "tabnet")
+learners = po("branch", choices) %>>%
+  gunion(learners_l) %>>%
+  po("unbranch")
+
+# non filter graph
+graph_nonfilter = po("dropnacol", id = "dropnacol", cutoff = 0.05) %>>%
+  po("dropna", id = "dropna") %>>%
+  po("removeconstants", id = "removeconstants_1", ratio = 0)  %>>%
+  po("winsorizesimple", id = "winsorizesimple", probs_low = 0.01, probs_high = 0.99, na_rm = TRUE) %>>%
+  po("removeconstants", id = "removeconstants_2", ratio = 0)  %>>%
+  po("dropcorr", id = "dropcorr", cutoff = 0.99) %>>%
+  po("uniformization") %>>%
+  po("dropna", id = "dropna_v2") %>>%
+  learners
+plot(graph_nonfilter)
+graph_nonfilter_lrn = as_learner(graph_nonfilter)
+
+# filter graph
+graph_filter = 
+  po("filter_rows", phase = "train") %>>%
   po("dropnacol", id = "dropnacol", cutoff = 0.05) %>>%
   po("dropna", id = "dropna") %>>%
   po("removeconstants", id = "removeconstants_1", ratio = 0)  %>>%
-  po("fixfactors", id = "fixfactors") %>>%
-  po("winsorizesimple", id = "winsorizesimple", probs_low = 0.01, probs_high = 0.99, na.rm = TRUE) %>>%
-  # po("winsorizesimplegroup", group_var = "weekid", id = "winsorizesimplegroup", probs_low = 0.01, probs_high = 0.99, na.rm = TRUE) %>>%
+  po("winsorizesimple", id = "winsorizesimple", probs_low = 0.01, probs_high = 0.99, na_rm = TRUE) %>>%
   po("removeconstants", id = "removeconstants_2", ratio = 0)  %>>%
   po("dropcorr", id = "dropcorr", cutoff = 0.99) %>>%
-  # po("uniformization") %>>%
-  # scale branch
-  po("branch", options = c("uniformization", "scale"), id = "scale_branch") %>>%
-  gunion(list(po("uniformization"),
-              po("scale")
-  )) %>>%
-  po("unbranch", id = "scale_unbranch") %>>%
+  po("uniformization") %>>%
   po("dropna", id = "dropna_v2") %>>%
-  # add pca columns
-  gr %>>%
-  # filters
-  # OLD BARNCH WAY
-  # po("branch", options = c("jmi", "gausscovf1", "gausscovf3"), id = "filter_branch") %>>%
-  # gunion(list(po("filter", filter = flt("jmi"), filter.nfeat = 25),
-  #             # po("filter", filter = flt("relief"), filter.nfeat = 25),
-  #             po("filter", filter = flt("gausscov_f1st"), p0 = 0.2, kmn=10, filter.cutoff = 0),
-  #             po("filter", filter = flt("gausscov_f3st"), p0 = 0.2, kmn=10, m = 1, filter.cutoff = 0)
-  # )) %>>%
-  # po("unbranch", id = "filter_unbranch") %>>%
-  # OLD BARNCH WAY
-  # filters union
-  graph_filters %>>%
-  # modelmatrix
-  # po("branch", options = c("nop_interaction", "modelmatrix"), id = "interaction_branch") %>>%
-  # gunion(list(
-  #   po("nop", id = "nop_interaction"),
-  #   po("modelmatrix", formula = ~ . ^ 2))) %>>%
-  # po("unbranch", id = "interaction_unbranch") %>>%
-  po("removeconstants", id = "removeconstants_3", ratio = 0)
+  learners
+plot(graph_filter)
+graph_filter_lrn = as_learner(graph_filter)
 
-# hyperparameters template
-as.data.table(graph_template$param_set)[1:100]
-gausscov_sp = as.character(seq(0.2, 0.8, by = 0.1))
-winsorize_sp =  c(0.999, 0.99, 0.98, 0.97, 0.90, 0.8)
-search_space_template = ps(
-  # filter target
-  filter_target_branch.selection = p_fct(levels = c("nop_filter_target", "filter_target_select")),
-  filter_target_id.q = p_fct(levels = c("0.4", "0.3", "0.2"),
-                             trafo = function(x, param_set) return(as.double(x)),
-                             depends = filter_target_branch.selection == "filter_target_select"),
-  # subsample for hyperband
-  subsample.frac = p_dbl(0.7, 1, tags = "budget"), # commencement this if we want to use hyperband optimization
-  # preprocessing
-  dropcorr.cutoff = p_fct(c("0.80", "0.90", "0.95", "0.99"),
-                          trafo = function(x, param_set) return(as.double(x))),
-  winsorizesimple.probs_high = p_fct(as.character(winsorize_sp),
-                                     trafo = function(x, param_set) return(as.double(x))),
-  winsorizesimple.probs_low = p_fct(as.character(1-winsorize_sp),
-                                    trafo = function(x, param_set) return(as.double(x))),
-  # scaling
-  scale_branch.selection = p_fct(levels = c("uniformization", "scale"))
+# threads
+print("Set threads")
+set_threads(graph_filter_lrn, n = ncores)
+set_threads(graph_nonfilter_lrn, n = ncores)
+
+# non filter params
+search_space_nonpca = ps(
+  branch.selection = p_fct(choices)
 )
 
+# filter params
+as.data.table(graph_filter_lrn$param_set)[, .(id, class, lower, upper)]
+as.data.table(graph_filter_lrn$param_set)[1:100, .(id, class, lower, upper)]
+tasks[[1]]$feature_names[grep("event", tasks[[1]]$feature_names)]
+tasks[[1]]$backend$data(rows = 1:tasks[[1]]$nrow, cols = c("date", "eventVol1001"))[eventVol1001 == 1]
+search_space = ps(
+  filterrows.filter_formula = p_fct(levels = as.character(1:2)),
+  # learner branch
+  branch.selection = p_fct(choices),
+  .extra_trafo = function(x, param_set) {
+    if (x$filterrows.filter_formula == "1") {
+      x$filterrows.filter_formula = as.formula("~ eventVol1001 == 1")
+    } 
+    # else if (x$filterrows.filter_formula == "2") {
+    #   x$filterrows.filter_formula = as.formula("~ eventVol1002 == 1")
+    # } else if (x$filterrows.filter_formula == "3") {
+    #   x$filterrows.filter_formula = as.formula("~ eventVol1003 == 1")
+    # } 
+    else if (x$filterrows.filter_formula == "2") {
+      x$filterrows.filter_formula = as.formula("~ eventVol4501 == 1")
+    } 
+    # else if (x$filterrows.filter_formula == "5") {
+    #   x$filterrows.filter_formula = as.formula("~ eventVol4502 == 1")
+    # } else if (x$filterrows.filter_formula == "6") {
+    #   x$filterrows.filter_formula = as.formula("~ eventVol4503 == 1")
+    # }
+    return(x)
+  }
+)
+
+# Debug
 if (interactive()) {
   # show all combinations from search space, like in grid
-  sp_grid = generate_design_grid(search_space_template, 1)
+  sp_grid = generate_design_grid(search_space, 1)
   sp_grid = sp_grid$data
   sp_grid
-
+  
   # check ids of nth cv sets
   train_ids = custom_cvs[[1]]$inner$instance$train[[1]]
-
-  # help graph for testing preprocessing
+  
+  # Test preprocessing
+  gr_test = 
+    po("filter_rows", phase = "train") %>>%
+    po("dropnacol", id = "dropnacol", cutoff = 0.05) %>>%
+    po("dropna", id = "dropna") %>>%
+    po("removeconstants", id = "removeconstants_1", ratio = 0)  %>>%
+    # po("winsorizesimple", id = "winsorizesimple", probs_low = 0.01, probs_high = 0.99, na_rm = TRUE) %>>%
+    # po("removeconstants", id = "removeconstants_2", ratio = 0)  %>>%
+    po("dropcorr", id = "dropcorr", cutoff = 0.99) %>>%
+    po("uniformization") %>>%
+    po("dropna", id = "dropna_v2") %>>%
+    po("removeconstants", id = "removeconstants_1", ratio = 0)
   task_ = tasks[[1]]$clone()
-  nr = task_$nrow
-  rows_ = (nr-10000):nr
   task_$filter(train_ids)
-  gr_test = graph_template$clone()
-  system.time({test_default = gr_test$train(task_)})
+  res_ = gr_test$train(task_)
+  dt_ = res_$filterrows.output$data()
+  tasks[[1]]$data(cols = "eventVol1001")
+  table(tasks[[1]]$data(cols = "eventVol1001"))
+  
+  dt_[, eventVol1001]
+  dt_[, eventVol4501]
+  dt_[, adxAdx14]
+  cor(tasks[[1]]$data(cols = c("eventVol1001", "eventVol4501")))
 }
 
-# random forest graph
-graph_rf = graph_template %>>%
-  po("learner", learner = lrn("regr.ranger"))
-graph_rf = as_learner(graph_rf)
-as.data.table(graph_rf$param_set)[, .(id, class, lower, upper, levels)]
-search_space_rf = search_space_template$clone()
-search_space_rf$add(
-  ps(regr.ranger.max.depth  = p_int(1, 15),
-     regr.ranger.replace    = p_lgl(),
-     regr.ranger.mtry.ratio = p_dbl(0.3, 1),
-     regr.ranger.num.trees  = p_int(10, 2000),
-     regr.ranger.splitrule  = p_fct(levels = c("variance", "extratrees")))
-)
-
-# xgboost graph
-graph_xgboost = graph_template %>>%
-  po("learner", learner = lrn("regr.xgboost"))
-plot(graph_xgboost)
-graph_xgboost = as_learner(graph_xgboost)
-as.data.table(graph_xgboost$param_set)[grep("depth", id), .(id, class, lower, upper, levels)]
-search_space_xgboost = ps(
-  # filter target
-  filter_target_branch.selection = p_fct(levels = c("nop_filter_target", "filter_target_select")),
-  filter_target_id.q = p_fct(levels = c("0.4", "0.3", "0.2"),
-                             trafo = function(x, param_set) return(as.double(x)),
-                             depends = filter_target_branch.selection == "filter_target_select"),
-  # subsample for hyperband
-  subsample.frac = p_dbl(0.7, 1, tags = "budget"), # commencement this if we want to use hyperband optimization
-  # preprocessing
-  dropcorr.cutoff = p_fct(c("0.80", "0.90", "0.95", "0.99"),
-                          trafo = function(x, param_set) return(as.double(x))),
-  winsorizesimple.probs_high = p_fct(as.character(winsorize_sp),
-                                     trafo = function(x, param_set) return(as.double(x))),
-  winsorizesimple.probs_low = p_fct(as.character(1-winsorize_sp),
-                                    trafo = function(x, param_set) return(as.double(x))),
-  # scaling
-  scale_branch.selection = p_fct(levels = c("uniformization", "scale")),
-  # filters
-  # learner
-  regr.xgboost.alpha     = p_dbl(0.001, 100, logscale = TRUE),
-  regr.xgboost.max_depth = p_int(1, 20),
-  regr.xgboost.eta       = p_dbl(0.0001, 1, logscale = TRUE),
-  regr.xgboost.nrounds   = p_int(1, 5000),
-  regr.xgboost.subsample = p_dbl(0.1, 1)
-)
-
-# gbm graph
-graph_gbm = graph_template %>>%
-  po("learner", learner = lrn("regr.gbm"))
-plot(graph_gbm)
-graph_gbm = as_learner(graph_gbm)
-as.data.table(graph_gbm$param_set)[, .(id, class, lower, upper, levels)]
-search_space_gbm = search_space_template$clone()
-search_space_gbm$add(
-  ps(regr.gbm.distribution      = p_fct(levels = c("gaussian", "tdist")),
-     regr.gbm.shrinkage         = p_dbl(lower = 0.001, upper = 0.1),
-     regr.gbm.n.trees           = p_int(lower = 50, upper = 150),
-     regr.gbm.interaction.depth = p_int(lower = 1, upper = 3))
-  # ....
-)
-
-# catboost graph
-graph_catboost = graph_template %>>%
-  po("learner", learner = lrn("regr.catboost"))
-graph_catboost = as_learner(graph_catboost)
-as.data.table(graph_catboost$param_set)[, .(id, class, lower, upper, levels)]
-search_space_catboost = search_space_template$clone()
-# https://catboost.ai/en/docs/concepts/parameter-tuning#description10
-search_space_catboost$add(
-  ps(regr.catboost.learning_rate   = p_dbl(lower = 0.01, upper = 0.3),
-     regr.catboost.depth           = p_int(lower = 4, upper = 10),
-     regr.catboost.l2_leaf_reg     = p_int(lower = 1, upper = 5),
-     regr.catboost.random_strength = p_int(lower = 0, upper = 3))
-)
-
-# cforest graph
-graph_cforest = graph_template %>>%
-  po("learner", learner = lrn("regr.cforest"))
-graph_cforest = as_learner(graph_cforest)
-as.data.table(graph_cforest$param_set)[, .(id, class, lower, upper, levels)]
-search_space_cforest = search_space_template$clone()
-# https://cran.r-project.org/web/packages/partykit/partykit.pdf
-search_space_cforest$add(
-  ps(regr.cforest.mtryratio    = p_dbl(0.05, 1),
-     regr.cforest.ntree        = p_int(lower = 10, upper = 2000),
-     regr.cforest.mincriterion = p_dbl(0.1, 1),
-     regr.cforest.replace      = p_lgl())
-)
-
-# # gamboost graph
-# # Error in eval(predvars, data, env) : object 'adxDx14' not found
-# # This happened PipeOp regr.gamboost's $train()
-# # In addition: There were 50 or more warnings (use warnings() to see the first 50)
-# graph_gamboost = graph_template %>>%
-#   po("learner", learner = lrn("regr.gamboost"))
-# graph_gamboost = as_learner(graph_gamboost)
-# as.data.table(graph_gamboost$param_set)[, .(id, class, lower, upper, levels)]
-# search_space_gamboost = search_space_template$clone()
-# search_space_gamboost$add(
-#   ps(regr.gamboost.mstop       = p_int(lower = 10, upper = 100),
-#      regr.gamboost.nu          = p_dbl(lower = 0.01, upper = 0.5),
-#      regr.gamboost.baselearner = p_fct(levels = c("bbs", "bols", "btree")))
-# )
-
-# kknn graph
-graph_kknn = graph_template %>>%
-  po("learner", learner = lrn("regr.kknn"))
-graph_kknn = as_learner(graph_kknn)
-as.data.table(graph_kknn$param_set)[, .(id, class, lower, upper, levels)]
-search_space_kknn = ps(
-  # filter target
-  filter_target_branch.selection = p_fct(levels = c("nop_filter_target", "filter_target_select")),
-  filter_target_id.q = p_fct(levels = c("0.4", "0.3", "0.2"),
-                             trafo = function(x, param_set) return(as.double(x)),
-                             depends = filter_target_branch.selection == "filter_target_select"),
-  # subsample for hyperband
-  subsample.frac = p_dbl(0.7, 1, tags = "budget"), # commencement this if we want to use hyperband optimization
-  # preprocessing
-  dropcorr.cutoff = p_fct(c("0.80", "0.90", "0.95", "0.99"),
-                          trafo = function(x, param_set) return(as.double(x))),
-  winsorizesimple.probs_high = p_fct(as.character(winsorize_sp),
-                                     trafo = function(x, param_set) return(as.double(x))),
-  winsorizesimple.probs_low = p_fct(as.character(1-winsorize_sp),
-                                    trafo = function(x, param_set) return(as.double(x))),
-  # scaling
-  scale_branch.selection = p_fct(levels = c("uniformization", "scale")),
-  # filters,
-  # learner
-  regr.kknn.k        = p_int(lower = 1, upper = 50, logscale = TRUE),
-  regr.kknn.distance = p_dbl(lower = 1, upper = 5),
-  regr.kknn.kernel   = p_fct(levels = c("rectangular","optimal", "epanechnikov",
-                                        "biweight", "triweight", "cos", "inv",
-                                        "gaussian","rank"))
-)
-
-# nnet graph
-graph_nnet = graph_template %>>%
-  po("learner", learner = lrn("regr.nnet", MaxNWts = 50000))
-graph_nnet = as_learner(graph_nnet)
-as.data.table(graph_nnet$param_set)[, .(id, class, lower, upper, levels)]
-search_space_nnet = search_space_template$clone()
-search_space_nnet$add(
-  ps(regr.nnet.size  = p_int(lower = 2, upper = 15),
-     regr.nnet.decay = p_dbl(lower = 0.0001, upper = 0.1),
-     regr.nnet.maxit = p_int(lower = 50, upper = 500))
-)
-
-# glmnet graph
-graph_glmnet = graph_template %>>%
-  po("learner", learner = lrn("regr.glmnet"))
-graph_glmnet = as_learner(graph_glmnet)
-as.data.table(graph_glmnet$param_set)[, .(id, class, lower, upper, levels)]
-search_space_glmnet = ps(
-  # filter target
-  filter_target_branch.selection = p_fct(levels = c("nop_filter_target", "filter_target_select")),
-  filter_target_id.q = p_fct(levels = c("0.4", "0.3", "0.2"),
-                             trafo = function(x, param_set) return(as.double(x)),
-                             depends = filter_target_branch.selection == "filter_target_select"),
-  # subsample for hyperband
-  subsample.frac = p_dbl(0.7, 1, tags = "budget"), # commencement this if we want to use hyperband optimization
-  # preprocessing
-  dropcorr.cutoff = p_fct(c("0.80", "0.90", "0.95", "0.99"),
-                          trafo = function(x, param_set) return(as.double(x))),
-  winsorizesimple.probs_high = p_fct(as.character(winsorize_sp),
-                                     trafo = function(x, param_set) return(as.double(x))),
-  winsorizesimple.probs_low = p_fct(as.character(1-winsorize_sp),
-                                    trafo = function(x, param_set) return(as.double(x))),
-  # scaling
-  scale_branch.selection = p_fct(levels = c("uniformization", "scale")),
-  # filters
-  # learner
-  regr.glmnet.s     = p_int(lower = 5, upper = 30),
-  regr.glmnet.alpha = p_dbl(lower = 1e-4, upper = 1, logscale = TRUE)
-)
-
-
-### THIS LEARNER UNSTABLE ####
-# ksvm graph
-# graph_ksvm = graph_template %>>%
-#   po("learner", learner = lrn("regr.ksvm"), scaled = FALSE)
-# graph_ksvm = as_learner(graph_ksvm)
-# as.data.table(graph_ksvm$param_set)[, .(id, class, lower, upper, levels)]
-# search_space_ksvm = ps(
-#   # subsample for hyperband
-#   subsample.frac = p_dbl(0.3, 1, tags = "budget"), # unccoment this if we want to use hyperband optimization
-#   # preprocessing
-#   dropcorr.cutoff = p_fct(
-#     levels = c("0.80", "0.90", "0.95", "0.99"),
-#     trafo = function(x, param_set) {
-#       switch(x,
-#              "0.80" = 0.80,
-#              "0.90" = 0.90,
-#              "0.95" = 0.95,
-#              "0.99" = 0.99)
-#     }
-#   ),
-#   # dropcorr.cutoff = p_fct(levels = c(0.8, 0.9, 0.95, 0.99)),
-#   winsorizesimplegroup.probs_high = p_fct(levels = c(0.999, 0.99, 0.98, 0.97, 0.90, 0.8)),
-#   winsorizesimplegroup.probs_low = p_fct(levels = c(0.001, 0.01, 0.02, 0.03, 0.1, 0.2)),
-#   # filters
-#   filter_branch.selection = p_fct(levels = c("jmi", "relief", "gausscov")),
-#   # interaction
-#   interaction_branch.selection = p_fct(levels = c("nop_interaction", "modelmatrix")),
-#   # learner
-#   regr.ksvm.kernel  = p_fct(levels = c("rbfdot", "polydot", "vanilladot",
-#                                        "laplacedot", "besseldot", "anovadot")),
-#   regr.ksvm.C       = p_dbl(lower = 0.0001, upper = 1000, logscale = TRUE),
-#   regr.ksvm.degree  = p_int(lower = 1, upper = 5,
-#                             depends = regr.ksvm.kernel %in% c("polydot", "besseldot", "anovadot")),
-#   regr.ksvm.epsilon = p_dbl(lower = 0.01, upper = 1)
-# )
-### THIS LEARNER UNSTABLE ####
-
-# LAST
-# lightgbm graph
-# [LightGBM] [Fatal] Do not support special JSON characters in feature name.
-graph_lightgbm = graph_template %>>%
-  po("learner", learner = lrn("regr.lightgbm"))
-graph_lightgbm = as_learner(graph_lightgbm)
-as.data.table(graph_lightgbm$param_set)[grep("sample", id), .(id, class, lower, upper, levels)]
-search_space_lightgbm = search_space_template$clone()
-search_space_lightgbm$add(
-  ps(regr.lightgbm.max_depth     = p_int(lower = 2, upper = 10),
-     regr.lightgbm.learning_rate = p_dbl(lower = 0.001, upper = 0.3),
-     regr.lightgbm.num_leaves    = p_int(lower = 10, upper = 100))
-)
-
-# earth graph
-graph_earth = graph_template %>>%
-  po("learner", learner = lrn("regr.earth"))
-graph_earth = as_learner(graph_earth)
-as.data.table(graph_earth$param_set)[grep("sample", id), .(id, class, lower, upper, levels)]
-search_space_earth = search_space_template$clone()
-search_space_earth$add(
-  ps(regr.earth.degree  = p_int(lower = 1, upper = 4),
-     # regr.earth.penalty = p_int(lower = 1, upper = 5),
-     regr.earth.nk      = p_int(lower = 50, upper = 250))
-)
-
-# rsm graph
-# TODO It need lots of memory ?
-graph_rsm = graph_template %>>%
-  po("learner", learner = lrn("regr.rsm"))
-plot(graph_rsm)
-graph_rsm = as_learner(graph_rsm)
-as.data.table(graph_rsm$param_set)[, .(id, class, lower, upper, levels)]
-search_space_rsm = search_space_template$clone()
-search_space_rsm$add(
-  ps(regr.rsm.modelfun = p_fct(levels = c("FO", "TWI", "SO")))
-)
-# Error in fo[, i] * fo[, j] : non-numeric argument to binary operator
-# This happened PipeOp regr.rsm's $train()
-# Calls: lapply ... resolve.list -> signalConditionsASAP -> signalConditions
-# In addition: Warning message:
-# In bbandsDn5:volumeDownUpRatio :
-#   numerical expression has 4076 elements: only the first used
-# This happened PipeOp regr.rsm's $train()
-
-# BART graph
-graph_bart = graph_template %>>%
-  po("learner", learner = lrn("regr.bart"))
-graph_bart = as_learner(graph_bart)
-as.data.table(graph_bart$param_set)[, .(id, class, lower, upper, levels)]
-search_space_bart = search_space_template$clone()
-search_space_bart$add(
-  ps(regr.bart.k      = p_int(lower = 1, upper = 10),
-     regr.bart.numcut = p_int(lower = 10, upper = 200),
-     regr.bart.ntree  = p_int(lower = 50, upper = 500))
-)
-# chatgpt returns this
-# n_chains = p_int(lower = 1, upper = 5),
-# m_try = p_int(lower = 1, upper = 13),
-# nu = p_dbl(lower = 0.1, upper = 10),
-# alpha = p_dbl(lower = 0.01, upper = 1),
-# beta = p_dbl(lower = 0.01, upper = 1),
-# burn = p_int(lower = 10, upper = 100),
-# iter = p_int(lower = 100, upper = 1000)
-
-# Threads
-# if (interactive()) {
-#   threads = 4
-# } else {
-#   threads = 4
-# }
-threads = 8
-set_threads(graph_rf, n = threads)
-set_threads(graph_xgboost, n = threads)
-set_threads(graph_bart, n = threads)
-# set_threads(graph_ksvm, n = threads) # unstable
-set_threads(graph_nnet, n = threads)
-set_threads(graph_kknn, n = threads)
-set_threads(graph_lightgbm, n = threads)
-set_threads(graph_earth, n = threads)
-set_threads(graph_gbm, n = threads)
-set_threads(graph_rsm, n = threads)
-set_threads(graph_catboost, n = threads)
-set_threads(graph_glmnet, n = threads)
-# set_threads(graph_cforest, n = threads)
-
-
-# DESIGNS -----------------------------------------------------------------
-designs_l = lapply(seq_along(custom_cvs), function(j) {
-  # Get current cv
+# create designs
+print("Create designs")
+if (interactive()) {
+  from_ = 1
+} else {
+  from_ = seq_along(custom_cvs)
+}
+designs_l = lapply(from_, function(j) {
+  # debug
   # j = 1
+  task_ = tasks[[j]]$clone()
   cv_ = custom_cvs[[j]]
   
   # get cv inner object
@@ -712,44 +454,23 @@ designs_l = lapply(seq_along(custom_cvs), function(j) {
   cv_outer = cv_$outer
   cat("Number of iterations fo cv inner is ", cv_inner$iters, "\n")
   
-  # to_ = 1:cv_inner$iters # TODO
-  # Define folds
+  # debug
   if (interactive()) {
-    to_ = 1:5  
+    to_ = 2
   } else {
-    to_ = 1:cv_inner$iters
+    to_ = cv_inner$iters
   }
   
-  # Main design CV loop
-  designs_cv_l = lapply(to_, function(i) {
-    
-    print(i)
-
-    ############### COMPARE ############    
-    # # debug
-    # # i = 1
-    # 
-    # # choose task_
-    # task_ind = sapply(tasks, function(x) x$id == gsub("-inner", "", cv_inner$id))
-    # task_ = tasks[[which(task_ind)]]
-    # 
-    # # with new mlr3 version I have to clone
-    # task_inner = task_$clone()
-    # task_inner$filter(c(cv_inner$train_set(i), cv_inner$test_set(i)))
-    # 
-    # # inner resampling
-    # custom_ = rsmp("custom")
-    # custom_$id = paste0("custom_", cv_inner$iters, "_", i)
-    # custom_$instantiate(task_inner,
-    #                     list(cv_inner$train_set(i)),
-    #                     list(cv_inner$test_set(i)))
-    ############### COMPARE ############
-    
+  designs_cv_l = lapply(1:to_, function(i) { # 1:cv_inner$iters
     # debug
     # i = 1
     
+    # choose task_
+    print(cv_inner$id)
+
     # with new mlr3 version I have to clone
-    task_inner = tasks[[j]]$clone()
+    task_inner = task_$clone()
+    task_inner$id = "task_inner"
     task_inner$filter(c(cv_inner$train_set(i), cv_inner$test_set(i)))
     
     # inner resampling
@@ -759,171 +480,42 @@ designs_l = lapply(seq_along(custom_cvs), function(j) {
                         list(cv_inner$train_set(i)),
                         list(cv_inner$test_set(i)))
     
-    # objects for all autotuners
-    measure_ = msr("adjloss2")
-    tuner_   = tnr("hyperband", eta = 6)
-    # tuner_   = tnr("mbo")
-    # term_evals = 20
-    
-    # auto tuner rf
-    at_rf = auto_tuner(
-      tuner = tuner_,
-      learner = graph_rf,
+    # auto tuner
+    at_nonfilter = auto_tuner(
+      tuner = tnr("grid_search", resolution = 20, batch_size = 2),
+      learner = graph_nonfilter_lrn,
       resampling = custom_,
-      measure = measure_,
-      search_space = search_space_rf,
-      terminator = trm("none")
-      # term_evals = term_evals
+      measure = msr("regr.mse"),
+      search_space = search_space_nonpca
     )
     
-    # auto tuner xgboost
-    at_xgboost = auto_tuner(
-      tuner = tuner_,
-      learner = graph_xgboost,
+    # auto tuner
+    at_filter = auto_tuner(
+      tuner = tnr("grid_search", resolution = 20, batch_size = 2),
+      learner = graph_filter_lrn,
       resampling = custom_,
-      measure = measure_,
-      search_space = search_space_xgboost,
-      terminator = trm("none")
-      # term_evals = term_evals
-    )
-    
-    # auto tuner BART
-    at_bart = auto_tuner(
-      tuner = tuner_,
-      learner = graph_bart,
-      resampling = custom_,
-      measure = measure_,
-      search_space = search_space_bart,
-      terminator = trm("none")
-      # term_evals = term_evals
-    )
-    
-    # auto tuner nnet
-    at_nnet = auto_tuner(
-      tuner = tuner_,
-      learner = graph_nnet,
-      resampling = custom_,
-      measure = measure_,
-      search_space = search_space_nnet,
-      terminator = trm("none")
-      # term_evals = term_evals
-    )
-    
-    # auto tuner lightgbm
-    at_lightgbm = auto_tuner(
-      tuner = tuner_,
-      learner = graph_lightgbm,
-      resampling = custom_,
-      measure = measure_,
-      search_space = search_space_lightgbm,
-      terminator = trm("none")
-      # term_evals = term_evals
-    )
-    
-    # auto tuner earth
-    at_earth = auto_tuner(
-      tuner = tuner_,
-      learner = graph_earth,
-      resampling = custom_,
-      measure = measure_,
-      search_space = search_space_earth,
-      terminator = trm("none")
-      # term_evals = term_evals
-    )
-    
-    # auto tuner kknn
-    at_kknn = auto_tuner(
-      tuner = tuner_,
-      learner = graph_kknn,
-      resampling = custom_,
-      measure = measure_,
-      search_space = search_space_kknn,
-      terminator = trm("none")
-      # term_evals = term_evals
-    )
-    
-    # auto tuner gbm
-    at_gbm = auto_tuner(
-      tuner = tuner_,
-      learner = graph_gbm,
-      resampling = custom_,
-      measure = measure_,
-      search_space = search_space_gbm,
-      terminator = trm("none")
-      # term_evals = term_evals
-    )
-    
-    # auto tuner rsm
-    at_rsm = auto_tuner(
-      tuner = tuner_,
-      learner = graph_rsm,
-      resampling = custom_,
-      measure = measure_,
-      search_space = search_space_rsm,
-      terminator = trm("none")
-      # term_evals = term_evals
-    )
-    
-    # auto tuner rsm
-    at_bart = auto_tuner(
-      tuner = tuner_,
-      learner = graph_bart,
-      resampling = custom_,
-      measure = measure_,
-      search_space = search_space_bart,
-      terminator = trm("none")
-      # term_evals = term_evals
-    )
-    
-    # auto tuner catboost
-    at_catboost = auto_tuner(
-      tuner = tuner_,
-      learner = graph_catboost,
-      resampling = custom_,
-      measure = measure_,
-      search_space = search_space_catboost,
-      terminator = trm("none")
-      # term_evals = term_evals
-    )
-    
-    # auto tuner glmnet
-    at_glmnet = auto_tuner(
-      tuner = tuner_,
-      learner = graph_glmnet,
-      resampling = custom_,
-      measure = measure_,
-      search_space = search_space_glmnet,
-      terminator = trm("none")
-      # term_evals = term_evals
-    )
-    
-    # auto tuner glmnet
-    at_cforest = auto_tuner(
-      tuner = tuner_,
-      learner = graph_cforest,
-      resampling = custom_,
-      measure = measure_,
-      search_space = search_space_cforest,
-      terminator = trm("none")
-      # term_evals = term_evals
+      measure = msr("regr.mse"),
+      search_space = search_space
     )
     
     # outer resampling
     customo_ = rsmp("custom")
     customo_$id = paste0("custom_", cv_inner$iters, "_", i)
-    customo_$instantiate(tasks[[j]]$clone(), 
+    task_outer = task_$clone()
+    task_outer$id = "task_outer"
+    customo_$instantiate(task_outer, 
                          list(cv_outer$train_set(i)), 
                          list(cv_outer$test_set(i)))
     
     # nested CV for one round
     design = benchmark_grid(
-      tasks = tasks[[j]]$clone(),
-      learners = list(at_rf, at_xgboost, at_lightgbm, at_nnet, at_earth,
-                      at_kknn, at_gbm, at_rsm, at_bart, at_catboost, at_glmnet), # , at_cforest
+      tasks = task_,
+      learners = list(at_filter, at_nonfilter),
       resamplings = customo_
     )
   })
-  do.call(rbind, designs_cv_l)
+  designs_cv = do.call(rbind, designs_cv_l)
+  # batchmark(designs)
 })
 designs = do.call(rbind, designs_l)
 
@@ -939,31 +531,38 @@ if (interactive()) {
 print("Create registry")
 packages = c("data.table", "gausscov", "paradox", "mlr3", "mlr3pipelines",
              "mlr3tuning", "mlr3misc", "future", "future.apply",
-             "mlr3extralearners", "stats")
+             "mlr3extralearners")
 reg = makeExperimentRegistry(file.dir = dirname_, seed = 1, packages = packages)
 
 # populate registry with problems and algorithms to form the jobs
 print("Batchmark")
-batchmark(designs, reg = reg)
+batchmark(designs, reg = reg, store_models = TRUE)
 
 # save registry
 print("Save registry")
 saveRegistry(reg = reg)
 
-# create sh file
-sh_file = sprintf("
+# If interactive train models, else create file
+if (interactive()) {
+  test = batchtools::testJob(1, reg = reg)
+  test2 = batchtools::testJob(2, reg = reg)
+} else {
+  # create sh file
+  sh_file = sprintf("
 #!/bin/bash
 
-#PBS -N PEAD
-#PBS -l ncpus=8
+#PBS -N H1
+#PBS -l ncpus=%d
 #PBS -l mem=16GB
 #PBS -J 1-%d
-#PBS -o %s/logs
+#PBS -o experiments/logs
 #PBS -j oe
 
 cd ${PBS_O_WORKDIR}
 apptainer run image.sif run_job.R 0
-", nrow(designs), dirname_)
-sh_file_name = "jobs.sh"
-file.create(sh_file_name)
-writeLines(sh_file, sh_file_name)
+", ncores, nrow(designs))
+  sh_file_name = "padobran.sh"
+  file.create(sh_file_name)
+  writeLines(sh_file, sh_file_name)
+}
+

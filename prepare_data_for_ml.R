@@ -1,6 +1,8 @@
 library(data.table)
 library(AzureStor)
 library(finfeatures)
+library(roll)
+library(ggplot2)
 
 
 # DATA --------------------------------------------------------------------
@@ -50,6 +52,25 @@ dt[, 1:10]
 cols_na_sum = dt[, lapply(.SD, function(x) sum(is.na(x))), .SDcols = colnames(dt)]
 cols_na_sum = melt(cols_na_sum, id.vars = "date")
 cols_na_sum[value > 2000]
+
+# Sample events
+vol_events = function(dt, n, nsd) {
+  dt[, roll_vol_ := roll_sd(returns_1, n)] # 450 is week
+  dt[, paste0("event_vol_", n, "_", nsd) := as.integer(abs(returns_1) > shift(roll_vol_ * nsd))]
+  setnafill(dt, cols = paste0("event_vol_", n, "_", nsd), fill = 0)
+  dt[, roll_vol_ := NULL]
+}
+vol_events(dt, 100, 1)
+vol_events(dt, 100, 2)
+vol_events(dt, 100, 3)
+vol_events(dt, 450, 1)
+vol_events(dt, 450, 2)
+vol_events(dt, 450, 3)
+dt[, .(date, event_vol_100_1, event_vol_100_2, event_vol_100_3, 
+       event_vol_450_1, event_vol_450_2, event_vol_450_3)]
+ggplot(dt[, .(date, close)], aes(x = date, y = close)) +
+  geom_line() +
+  geom_point(data = dt[event_vol_100_1 == 1, .(date, close)], aes(x = date, y = close), color = "red", size = 0.5)
 
 
 # TARGETS -----------------------------------------------------------------
@@ -148,13 +169,13 @@ last_date = strftime(dt[, max(date)], "%Y%m%d")
 file_name = paste0("spyml-predictors-", last_date, ".csv")
 file_name_local = fs::path("F:/predictors/spyml_dt", file_name)
 fwrite(dt, file_name_local)
- 
-# Save to Azure blob
-endpoint = "https://snpmarketdata.blob.core.windows.net/"
-blob_key = readLines('./blob_key.txt')
-BLOBENDPOINT = storage_endpoint(endpoint, key=blob_key)
-cont = storage_container(BLOBENDPOINT, "jphd")
-storage_write_csv(dt, cont, file_name)
+
+# # Save to Azure blob
+# endpoint = "https://snpmarketdata.blob.core.windows.net/"
+# blob_key = readLines('./blob_key.txt')
+# BLOBENDPOINT = storage_endpoint(endpoint, key=blob_key)
+# cont = storage_container(BLOBENDPOINT, "jphd")
+# storage_write_csv(dt, cont, file_name)
 
 # TODO: Check this columns in finfetures. They have lots of missing values
 # [1] "tsfresh_values__query_similarity_count__query_None__threshold_0_0_400"
