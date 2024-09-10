@@ -26,7 +26,7 @@ args = commandArgs(trailingOnly = TRUE)
 if (interactive()) {
   id_1 = 1
   id_2 = 2
-  setwd("F:/strategies/H1")
+  setwd("F:/strategies/H1") # PATH
 } else {
   # Ensure there are enough arguments
   if(length(args) < 2) {
@@ -82,7 +82,7 @@ if (file.exists(file_)) {
   # aggregated results for each testing period (add average and sd in reporting table)----
   aggregates_l = lapply(results, function(x) x$aggregate)
   aggregates = rbindlist(aggregates_l)
-  aggregates[, pca_applied := ifelse(grepl("pca_explained", learner_id), "pca", "nopca")]
+  aggregates[, pca_applied := ifelse(grepl("filterrows", learner_id), "filter", "nonfilter")]
   aggregates[, cv := as.numeric(sub(".*_([0-9]+)_.*", "\\1", resampling_id))]
   aggregates[, fold := as.numeric(sub(".*_([0-9]+)$", "\\1", resampling_id))]
   aggregates_df = aggregates[,.(pca_applied,cv,fold, task_id,regr.mse,regr.rmse, regr.mae)]
