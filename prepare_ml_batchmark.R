@@ -388,7 +388,7 @@ search_space = ps(
     #   x$filterrows.filter_formula = as.formula("~ eventVol1002 == 1")
     # } else if (x$filterrows.filter_formula == "3") {
     #   x$filterrows.filter_formula = as.formula("~ eventVol1003 == 1")
-    # } 
+    # }
     else if (x$filterrows.filter_formula == "2") {
       x$filterrows.filter_formula = as.formula("~ eventVol4501 == 1")
     } 
