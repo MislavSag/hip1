@@ -377,26 +377,23 @@ as.data.table(graph_filter_lrn$param_set)[1:100, .(id, class, lower, upper)]
 tasks[[1]]$feature_names[grep("event", tasks[[1]]$feature_names)]
 # tasks[[1]]$backend$data(rows = 1:tasks[[1]]$nrow, cols = c("date", "eventVol1001"))[eventVol1001 == 1]
 search_space = ps(
-  filterrows.filter_formula = p_fct(levels = as.character(1:2)),
+  filterrows.filter_formula = p_fct(levels = as.character(1:6)),
   # learner branch
   branch.selection = p_fct(choices),
   .extra_trafo = function(x, param_set) {
     if (x$filterrows.filter_formula == "1") {
       x$filterrows.filter_formula = as.formula("~ eventVol1001 == 1")
-    } 
-    # else if (x$filterrows.filter_formula == "2") {
-    #   x$filterrows.filter_formula = as.formula("~ eventVol1002 == 1")
-    # } else if (x$filterrows.filter_formula == "3") {
-    #   x$filterrows.filter_formula = as.formula("~ eventVol1003 == 1")
-    # }
-    else if (x$filterrows.filter_formula == "2") {
+    } else if (x$filterrows.filter_formula == "2") {
+      x$filterrows.filter_formula = as.formula("~ eventVol1002 == 1")
+    } else if (x$filterrows.filter_formula == "3") {
+      x$filterrows.filter_formula = as.formula("~ eventVol1003 == 1")
+    } else if (x$filterrows.filter_formula == "4") {
       x$filterrows.filter_formula = as.formula("~ eventVol4501 == 1")
-    } 
-    # else if (x$filterrows.filter_formula == "5") {
-    #   x$filterrows.filter_formula = as.formula("~ eventVol4502 == 1")
-    # } else if (x$filterrows.filter_formula == "6") {
-    #   x$filterrows.filter_formula = as.formula("~ eventVol4503 == 1")
-    # }
+    } else if (x$filterrows.filter_formula == "5") {
+      x$filterrows.filter_formula = as.formula("~ eventVol4502 == 1")
+    } else if (x$filterrows.filter_formula == "6") {
+      x$filterrows.filter_formula = as.formula("~ eventVol4503 == 1")
+    }
     return(x)
   }
 )
@@ -422,11 +419,11 @@ if (interactive()) {
     po("dropcorr", id = "dropcorr", cutoff = 0.99) %>>%
     po("uniformization") %>>%
     po("dropna", id = "dropna_v2") %>>%
-    po("removeconstants", id = "removeconstants_1", ratio = 0)
+    po("removeconstants", id = "removeconstants_2", ratio = 0)
   task_ = tasks[[1]]$clone()
   task_$filter(train_ids)
   res_ = gr_test$train(task_)
-  dt_ = res_$filterrows.output$data()
+  dt_ = res_$removeconstants_2.output$data()
   tasks[[1]]$data(cols = "eventVol1001")
   table(tasks[[1]]$data(cols = "eventVol1001"))
   
