@@ -148,7 +148,7 @@ ids_not_done = findNotDone(reg=reg)
 ids_done = findDone(reg=reg)
 
 # create job collection
-resources = list(ncpus = 4) # this shouldn't be important
+resources = list(ncpus = 8L) # this shouldn't be important
 if (residue) {
   jc = makeJobCollection(ids = ids_not_done,
                          resources = resources,
