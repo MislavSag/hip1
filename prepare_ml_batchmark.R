@@ -377,7 +377,7 @@ as.data.table(graph_filter_lrn$param_set)[1:100, .(id, class, lower, upper)]
 tasks[[1]]$feature_names[grep("event", tasks[[1]]$feature_names)]
 # tasks[[1]]$backend$data(rows = 1:tasks[[1]]$nrow, cols = c("date", "eventVol1001"))[eventVol1001 == 1]
 search_space = ps(
-  filterrows.filter_formula = p_fct(levels = as.character(1:6)),
+  filterrows.filter_formula = p_fct(levels = as.character(1:4)),
   # learner branch
   branch.selection = p_fct(choices),
   .extra_trafo = function(x, param_set) {
@@ -385,15 +385,17 @@ search_space = ps(
       x$filterrows.filter_formula = as.formula("~ eventVol1001 == 1")
     } else if (x$filterrows.filter_formula == "2") {
       x$filterrows.filter_formula = as.formula("~ eventVol1002 == 1")
-    } else if (x$filterrows.filter_formula == "3") {
-      x$filterrows.filter_formula = as.formula("~ eventVol1003 == 1")
-    } else if (x$filterrows.filter_formula == "4") {
+    } 
+    # else if (x$filterrows.filter_formula == "3") {
+    #   x$filterrows.filter_formula = as.formula("~ eventVol1003 == 1")
+    else if (x$filterrows.filter_formula == "3") {
       x$filterrows.filter_formula = as.formula("~ eventVol4501 == 1")
-    } else if (x$filterrows.filter_formula == "5") {
+    } else if (x$filterrows.filter_formula == "4") {
       x$filterrows.filter_formula = as.formula("~ eventVol4502 == 1")
-    } else if (x$filterrows.filter_formula == "6") {
-      x$filterrows.filter_formula = as.formula("~ eventVol4503 == 1")
-    }
+    } 
+  # else if (x$filterrows.filter_formula == "6") {
+  #     x$filterrows.filter_formula = as.formula("~ eventVol4503 == 1")
+  #   }
     return(x)
   }
 )
@@ -556,8 +558,8 @@ if (interactive()) {
 #PBS -j oe
 
 cd ${PBS_O_WORKDIR}
-apptainer run image.sif run_job.R 0
-", ncores, nrow(designs))
+apptainer run image.sif run_job.R 0 %s
+", ncores, nrow(designs), dirname_)
   sh_file_name = "padobran.sh"
   file.create(sh_file_name)
   writeLines(sh_file, sh_file_name)
