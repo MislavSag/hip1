@@ -348,7 +348,7 @@ graph_nonfilter_lrn = as_learner(graph_nonfilter)
 
 # filter graph
 graph_filter = 
-  po("filter_rows", phase = "always") %>>%
+  po("filter_rows", phase = "train") %>>%
   po("dropnacol", id = "dropnacol", cutoff = 0.05) %>>%
   po("dropna", id = "dropna") %>>%
   po("removeconstants", id = "removeconstants_1", ratio = 0)  %>>%
@@ -426,7 +426,8 @@ if (interactive()) {
   task_$filter(train_ids)
   res_ = gr_test$train(task_)
   dt_ = res_$removeconstants_2.output$data()
-  tasks[[1]]$data(cols = "eventVol1001")
+  x_ = tasks[[1]]$data(cols = "eventVol4503")
+  x_[, sum(x_ == 1)]
   table(tasks[[1]]$data(cols = "eventVol1001"))
   
   dt_[, eventVol1001]
@@ -528,7 +529,7 @@ if (interactive()) {
 
 # create registry
 print("Create registry")
-packages = c("data.table", "gausscov", "paradox", "mlr3", "mlr3pipelines",
+packages = c("data.table", "paradox", "mlr3", "mlr3pipelines",
              "mlr3tuning", "mlr3misc", "future", "future.apply",
              "mlr3extralearners")
 reg = makeExperimentRegistry(file.dir = dirname_, seed = 1, packages = packages)
