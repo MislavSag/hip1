@@ -321,7 +321,7 @@ mlp_graph = po("torch_ingress_num") %>>%
 learners_l = list(
   ranger  = lrn("regr.ranger", id = "ranger"),
   xgboost = lrn("regr.xgboost", id = "xgboost"),
-  bart    = lrn("regr.bart", id = "bart"),
+  bart    = lrn("regr.bart", id = "bart", sigest = 1),
   nnet    = lrn("regr.nnet", id = "nnet", MaxNWts = 50000),
   mlp     = mlp_graph,
   tabnet  = lrn("regr_tabnet", id = "tabnet")
@@ -553,7 +553,7 @@ if (interactive()) {
 
 #PBS -N H1
 #PBS -l ncpus=%d
-#PBS -l mem=16GB
+#PBS -l mem=25GB
 #PBS -J 1-%d
 #PBS -o experiments/logs
 #PBS -j oe
