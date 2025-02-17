@@ -3,13 +3,13 @@ sh_file = "
 
 #PBS -N H1results
 #PBS -l ncpus=1
-#PBS -l mem=50GB
+#PBS -l mem=80GB
 #PBS -j oe
 
 cd ${PBS_O_WORKDIR}
 "
 
-id_seq = seq(1, 1034, 25)
+id_seq = seq(1, 1034, 10)
 id_seq_sh = paste0(
   "apptainer run image.sif results_test.R ",
   id_seq, " ",
