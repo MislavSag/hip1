@@ -436,6 +436,7 @@ if (interactive()) {
   cor(tasks[[1]]$data(cols = c("eventVol1001", "eventVol4501")))
 }
 
+# 183 * 2 + 173 * 2 + 161 * 2
 # create designs
 print("Create designs")
 if (interactive()) {
@@ -445,7 +446,7 @@ if (interactive()) {
 }
 designs_l = lapply(from_, function(j) {
   # debug
-  # j = 1
+  # j = 3
   task_ = tasks[[j]]$clone()
   cv_ = custom_cvs[[j]]
   

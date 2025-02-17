@@ -19,6 +19,10 @@ library(purrr)
 # library(multcomp)
 
 
+# Import mapee measure
+source("mapee.R")
+mlr_measures$add("mapee", MapeWithEpsilon)
+
 # Import command line arguments
 args = commandArgs(trailingOnly = TRUE)
 
@@ -72,44 +76,35 @@ if (file.exists(file_)) {
     # bmr object
     bmr_ = reduceResultsBatchmark(id_, store_backends = FALSE, reg = reg)
     # aggregated results
-    aggregate = bmr_$aggregate(msrs(c("regr.mse", "regr.mae", "regr.rmse")))
+    aggregate = bmr_$aggregate(msrs(c("regr.mse", "regr.mae", "regr.rmse", "mapee")))
+    
+    # bmr_$aggregate(msr("regr.mape"))
+    # bmr_$aggregate(msr("regr.mape", na_value = 0))
+    # bmr_test = bmr_$clone()
+    # test = as.data.table(bmr_test$resample_results$resample_result[[1]]$predictions()[[1]])
+    # mlr3measures::mape(truth = test$truth, response = test$response)
+    # mlr3measures::mape(truth = test$truth[test$truth != 0], response = test$response[test$truth != 0])
+    
     # instances across folds
     rresults = bmr_$resample_results
     # get aggreagate and instances
     return(list(aggregate = aggregate, rresults = rresults))
   })
   
-  # aggregated results for each testing period (add average and sd in reporting table)----
+  # Aggreagates
   aggregates_l = lapply(results, function(x) x$aggregate)
   aggregates = rbindlist(aggregates_l)
-  aggregates[, pca_applied := ifelse(grepl("filterrows", learner_id), "filter", "nonfilter")]
+  aggregates[, filter_applied := ifelse(grepl("filterrows", learner_id), "filter", "nonfilter")]
   aggregates[, cv := as.numeric(sub(".*_([0-9]+)_.*", "\\1", resampling_id))]
   aggregates[, fold := as.numeric(sub(".*_([0-9]+)$", "\\1", resampling_id))]
-  aggregates_df = aggregates[,.(pca_applied,cv,fold, task_id,regr.mse,regr.rmse, regr.mae)]
-  
-  #(zanemari)
-  # report results ----
-  aggregates_mse  <- dcast(aggregates, cv + task_id + fold ~ pca_applied, value.var = "regr.mse")
-  aggregates_rmse <- dcast(aggregates, cv + task_id + fold ~ pca_applied, value.var = "regr.rmse")
-  aggregates_mae  <- dcast(aggregates, cv + task_id + fold ~ pca_applied, value.var = "regr.mae")
-  # rename columns for clarity ----
-  setnames(aggregates_mse, c("pca", "nopca"), c("mse_pca", "mse_nopca"))
-  setnames(aggregates_rmse, c("pca", "nopca"), c("rmse_pca", "rmse_nopca"))
-  setnames(aggregates_mae, c("pca", "nopca"), c("mae_pca", "mae_nopca"))
-  # extract by cv ----
-  cv_list_of_tables_mse <- aggregates[, .(table = list(dcast(.SD, task_id + fold ~ pca_applied, value.var = "regr.mse"))), by = cv]$table
-  cv_list_of_tables_rmse <- aggregates[, .(table = list(dcast(.SD, task_id + fold ~ pca_applied, value.var = "regr.rmse"))), by = cv]$table
-  cv_list_of_tables_mae <- aggregates[, .(table = list(dcast(.SD, task_id + fold ~ pca_applied, value.var = "regr.mae"))), by = cv]$table
-  # extract by task ----
-  task_list_of_tables_mse <- aggregates[, .(table = list(dcast(.SD,  fold ~ pca_applied, value.var = "regr.mse"))), by = task_id]$table
-  task_list_of_tables_rmse <- aggregates[, .(table = list(dcast(.SD,  fold ~ pca_applied, value.var = "regr.rmse"))), by = task_id]$table
-  task_list_of_tables_mae <- aggregates[, .(table = list(dcast(.SD,  fold ~ pca_applied, value.var = "regr.mae"))), by = task_id]$table
+  aggregates_df = aggregates[,.(filter_applied,cv,fold, task_id,regr.mse,regr.rmse, regr.mae, mape_with_epsilon)]
   
   # best tuned model ----
   rresults = lapply(results, function(x) x$rresults)
   instances = lapply(rresults, function(x) x$resample_result)
   instances_unlist = unlist(instances)
   instances_weiter = lapply(instances_unlist, function(x) {
+    # x = instances_unlist[[1]]
     # extract tuning_instance
     tuning_instance = x$learners[[1]]$state$model$tuning_instance
     # extract task, result , learner_id and resampling_id
@@ -117,8 +112,8 @@ if (file.exists(file_)) {
     result = tuning_instance$result
     learner_id = x$learner$id
     resampling_id = x$resampling$id
-    # compute pca_applied, cv, and fold
-    pca_applied = ifelse(grepl("pca_explained", learner_id), "pca", "nopca")
+    # compute filter_applied, cv, and fold
+    filter_applied = ifelse(grepl("filterrows", learner_id), "filter", "nofilter")
     cv = as.numeric(sub(".*_([0-9]+)_.*", "\\1", resampling_id))
     fold = as.numeric(sub(".*_([0-9]+)$", "\\1", resampling_id))
     # return as a list
@@ -128,35 +123,35 @@ if (file.exists(file_)) {
       result = result,
       learner_id = learner_id,
       resampling_id = resampling_id,
-      pca_applied = pca_applied,
+      filter_applied = filter_applied,
       cv = cv,
-      fold = fold
+      fold = fold,
+      mapee = x$score(msr("mapee"))$mape_with_epsilon
     ))
   })
   best_tuned_list <- lapply(instances_weiter, function(x) {
     # x = instances_weiter[[2]]
     task = x$task
     if (!is.null(x$result)) {
-      pca_explained.var. = if (is.null(x$result$pca_explained.var.)) NA else x$result$pca_explained.var.
+      filterrows.filter_formula = if (is.null(x$result$filterrows.filter_formula)) NA else x$result$filterrows.filter_formula
       branch.selection = x$result$branch.selection
       regr.mse = x$result$regr.mse
     } else {
-      pca_explained.var. = NA
+      filterrows.filter_formula = NA
       branch.selection = NA
       regr.mse = NA
     }
     resampling_id = x$resampling_id
-    pca_applied = x$pca_applied
+    filter_applied = x$filter_applied
     cv = x$cv
     fold = x$fold
     
-    return(data.frame(task, pca_explained.var., branch.selection, regr.mse,
-                      pca_applied, cv, fold))
+    return(data.frame(task, filterrows.filter_formula, branch.selection, regr.mse,
+                      filter_applied, cv, fold, mapee = x$mapee))
   })
   # convert to single data.frame
   best_tuned_df <- do.call(rbind, best_tuned_list)
-  best_tuned_df <- best_tuned_df[!(best_tuned_df$pca_applied == "nopca"), ]
-  
+  best_tuned_df <- best_tuned_df[!(best_tuned_df$filter_applied == "nofilter"), ]
   
   # average tuned model ----
   instances_archives = lapply(instances_unlist, function(x) {
@@ -179,34 +174,35 @@ if (file.exists(file_)) {
     resampling_id = x$resampling$id
     
     # compute pca_applied, cv, and fold
-    pca_applied = ifelse(grepl("pca_explained", learner_id), "pca", "nopca")
+    filter_applied = ifelse(grepl("filterrows", learner_id), "filter", "nofilter")
     cv = as.numeric(sub(".*_([0-9]+)_.*", "\\1", resampling_id))
     fold = as.numeric(sub(".*_([0-9]+)$", "\\1", resampling_id))
     
     # number of PC
-    ncp = ifelse(!is.null(x$learners[[1]]$state$model$learner$state$model$pca_explained$rotation),
-                 ncol(x$learners[[1]]$state$model$learner$state$model$pca_explained$rotation),
-                 NA)
     
-    # extract selected columns
-    if (is.na(ncp)) {
-      return(NULL)
-    } else {
-      selected_data = archive_data[, .(`pca_explained.var.`, branch.selection, regr.mse)]
-    }
+    # ncp = ifelse(!is.null(x$learners[[1]]$state$model$learner$state$model$pca_explained$rotation),
+    #              ncol(x$learners[[1]]$state$model$learner$state$model$pca_explained$rotation),
+    #              NA)
+    #
+    # # extract selected columns
+    # if (is.na(ncp)) {
+    #   return(NULL)
+    # } else {
+    #   selected_data = archive_data[, .(pca_explained.var., branch.selection, regr.mse)]
+    # }
     
     
     # return list
     return(list(
-      selected_data = selected_data,
+      #      selected_data = selected_data,
       task = task,
       result = result,
       learner_id = learner_id,
       resampling_id = resampling_id,
-      pca_applied = pca_applied,
+      filter_applied = filter_applied,
       cv = cv,
-      fold = fold,
-      ncp = ncp
+      fold = fold
+      #     ncp = ncp
     ))
   })
   # function for mode----
@@ -215,34 +211,35 @@ if (file.exists(file_)) {
     uniqv[which.max(tabulate(match(v, uniqv)))]
   }
   average_tuned_list <- lapply(instances_archives, function(x) {
-    
-    # x = instances_archives[[2]]
-    
-    # for NULL entries
     if (is.null(x)) return(NULL)
     
-    # calculate mode for pca_explained.var.
-    mode_pca_explained = get_mode(x$selected_data$pca_explained.var.)
-    if (is.na(mode_pca_explained)) return(NULL)
-    mean_regr_mse = mean(as.numeric(as.character(x$selected_data$regr.mse)), na.rm = TRUE)  # need to convert regr.mse to numeric
+    # Check if filterrows.filter_formula exists and is not empty
+    filter_explained_result <- if (!is.null(x$result$filterrows.filter_formula) && length(x$result$filterrows.filter_formula) > 0) {
+      x$result$filterrows.filter_formula
+    } else {
+      NA  # or any default value you want
+    }
     
-    # extract details
-    pca_explained_result = x$result$pca_explained.var.
-    branch_selection_result = x$result$branch.selection
-    regr_mse_result = x$result$regr.mse
+    branch_selection_result <- if (!is.null(x$result$branch.selection) && length(x$result$branch.selection) > 0) {
+      x$result$branch.selection
+    } else {
+      NA
+    }
     
-    # makew data frame
+    regr_mse_result <- if (!is.null(x$result$regr.mse) && length(x$result$regr.mse) > 0) {
+      x$result$regr.mse
+    } else {
+      NA
+    }
+    
     data.frame(
       task = x$task,
-      pca_applied = x$pca_applied,
+      filter_applied = x$filter_applied,
       cv = x$cv,
       fold = x$fold,
-      mode_pca_explained = mode_pca_explained,
-      mean_regr_mse = mean_regr_mse,
-      pca_explained_result_best = pca_explained_result,
+      filter_explained_result_best = filter_explained_result,
       branch_selection_result_best = branch_selection_result,
       regr_mse_result_best = regr_mse_result,
-      ncp = x$ncp,  #
       row.names = NULL
     )
   })
