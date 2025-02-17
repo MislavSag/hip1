@@ -11,7 +11,7 @@ cd ${PBS_O_WORKDIR}
 
 id_seq = seq(1, 1034, 25)
 id_seq_sh = paste0(
-  "apptainer run image.sif H2_results.R ",
+  "apptainer run image.sif results_test.R ",
   id_seq, " ",
   c(id_seq[2:length(id_seq)] - 1, 1034),
   collapse = "\n"
