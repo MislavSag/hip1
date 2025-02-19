@@ -1,0 +1,114 @@
+
+#!/bin/bash
+
+#PBS -N H1predictions
+#PBS -l ncpus=1
+#PBS -l mem=80GB
+#PBS -j oe
+
+cd ${PBS_O_WORKDIR}
+
+apptainer run image.sif extract_predictions.R 1 10
+apptainer run image.sif extract_predictions.R 11 20
+apptainer run image.sif extract_predictions.R 21 30
+apptainer run image.sif extract_predictions.R 31 40
+apptainer run image.sif extract_predictions.R 41 50
+apptainer run image.sif extract_predictions.R 51 60
+apptainer run image.sif extract_predictions.R 61 70
+apptainer run image.sif extract_predictions.R 71 80
+apptainer run image.sif extract_predictions.R 81 90
+apptainer run image.sif extract_predictions.R 91 100
+apptainer run image.sif extract_predictions.R 101 110
+apptainer run image.sif extract_predictions.R 111 120
+apptainer run image.sif extract_predictions.R 121 130
+apptainer run image.sif extract_predictions.R 131 140
+apptainer run image.sif extract_predictions.R 141 150
+apptainer run image.sif extract_predictions.R 151 160
+apptainer run image.sif extract_predictions.R 161 170
+apptainer run image.sif extract_predictions.R 171 180
+apptainer run image.sif extract_predictions.R 181 190
+apptainer run image.sif extract_predictions.R 191 200
+apptainer run image.sif extract_predictions.R 201 210
+apptainer run image.sif extract_predictions.R 211 220
+apptainer run image.sif extract_predictions.R 221 230
+apptainer run image.sif extract_predictions.R 231 240
+apptainer run image.sif extract_predictions.R 241 250
+apptainer run image.sif extract_predictions.R 251 260
+apptainer run image.sif extract_predictions.R 261 270
+apptainer run image.sif extract_predictions.R 271 280
+apptainer run image.sif extract_predictions.R 281 290
+apptainer run image.sif extract_predictions.R 291 300
+apptainer run image.sif extract_predictions.R 301 310
+apptainer run image.sif extract_predictions.R 311 320
+apptainer run image.sif extract_predictions.R 321 330
+apptainer run image.sif extract_predictions.R 331 340
+apptainer run image.sif extract_predictions.R 341 350
+apptainer run image.sif extract_predictions.R 351 360
+apptainer run image.sif extract_predictions.R 361 370
+apptainer run image.sif extract_predictions.R 371 380
+apptainer run image.sif extract_predictions.R 381 390
+apptainer run image.sif extract_predictions.R 391 400
+apptainer run image.sif extract_predictions.R 401 410
+apptainer run image.sif extract_predictions.R 411 420
+apptainer run image.sif extract_predictions.R 421 430
+apptainer run image.sif extract_predictions.R 431 440
+apptainer run image.sif extract_predictions.R 441 450
+apptainer run image.sif extract_predictions.R 451 460
+apptainer run image.sif extract_predictions.R 461 470
+apptainer run image.sif extract_predictions.R 471 480
+apptainer run image.sif extract_predictions.R 481 490
+apptainer run image.sif extract_predictions.R 491 500
+apptainer run image.sif extract_predictions.R 501 510
+apptainer run image.sif extract_predictions.R 511 520
+apptainer run image.sif extract_predictions.R 521 530
+apptainer run image.sif extract_predictions.R 531 540
+apptainer run image.sif extract_predictions.R 541 550
+apptainer run image.sif extract_predictions.R 551 560
+apptainer run image.sif extract_predictions.R 561 570
+apptainer run image.sif extract_predictions.R 571 580
+apptainer run image.sif extract_predictions.R 581 590
+apptainer run image.sif extract_predictions.R 591 600
+apptainer run image.sif extract_predictions.R 601 610
+apptainer run image.sif extract_predictions.R 611 620
+apptainer run image.sif extract_predictions.R 621 630
+apptainer run image.sif extract_predictions.R 631 640
+apptainer run image.sif extract_predictions.R 641 650
+apptainer run image.sif extract_predictions.R 651 660
+apptainer run image.sif extract_predictions.R 661 670
+apptainer run image.sif extract_predictions.R 671 680
+apptainer run image.sif extract_predictions.R 681 690
+apptainer run image.sif extract_predictions.R 691 700
+apptainer run image.sif extract_predictions.R 701 710
+apptainer run image.sif extract_predictions.R 711 720
+apptainer run image.sif extract_predictions.R 721 730
+apptainer run image.sif extract_predictions.R 731 740
+apptainer run image.sif extract_predictions.R 741 750
+apptainer run image.sif extract_predictions.R 751 760
+apptainer run image.sif extract_predictions.R 761 770
+apptainer run image.sif extract_predictions.R 771 780
+apptainer run image.sif extract_predictions.R 781 790
+apptainer run image.sif extract_predictions.R 791 800
+apptainer run image.sif extract_predictions.R 801 810
+apptainer run image.sif extract_predictions.R 811 820
+apptainer run image.sif extract_predictions.R 821 830
+apptainer run image.sif extract_predictions.R 831 840
+apptainer run image.sif extract_predictions.R 841 850
+apptainer run image.sif extract_predictions.R 851 860
+apptainer run image.sif extract_predictions.R 861 870
+apptainer run image.sif extract_predictions.R 871 880
+apptainer run image.sif extract_predictions.R 881 890
+apptainer run image.sif extract_predictions.R 891 900
+apptainer run image.sif extract_predictions.R 901 910
+apptainer run image.sif extract_predictions.R 911 920
+apptainer run image.sif extract_predictions.R 921 930
+apptainer run image.sif extract_predictions.R 931 940
+apptainer run image.sif extract_predictions.R 941 950
+apptainer run image.sif extract_predictions.R 951 960
+apptainer run image.sif extract_predictions.R 961 970
+apptainer run image.sif extract_predictions.R 971 980
+apptainer run image.sif extract_predictions.R 981 990
+apptainer run image.sif extract_predictions.R 991 1000
+apptainer run image.sif extract_predictions.R 1001 1010
+apptainer run image.sif extract_predictions.R 1011 1020
+apptainer run image.sif extract_predictions.R 1021 1030
+apptainer run image.sif extract_predictions.R 1031 1034

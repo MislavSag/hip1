@@ -242,6 +242,11 @@ custom_cvs = lapply(tasks, function(tsk) {
   cv_split(tsk)
 })
 
+# Check CV's
+custom_cvs[[1]]$inner$iters
+custom_cvs[[2]]$inner$iters
+custom_cvs[[3]]$inner$iters
+
 # visualize test
 if (interactive()) {
   library(ggplot2)
