@@ -68,9 +68,9 @@ if (file.exists(file_)) {
   results[[1]]$learner_state$model$learner$state$train_task$id
   horizont_ = vapply(results, function(x) {
     data.table::fcase(
-      grepl("task_targetRet1", x$learner_state$model$learner$state$train_task$id), "ret1",
-      grepl("task_targetRet6", x$learner_state$model$learner$state$train_task$id), "ret6",
-      grepl("task_targetRet12", x$learner_state$model$learner$state$train_task$id), "ret12"
+      grepl("task_targetRet1$", x$learner_state$model$learner$state$train_task$id), "ret1",
+      grepl("task_targetRet6$", x$learner_state$model$learner$state$train_task$id), "ret6",
+      grepl("task_targetRet12$", x$learner_state$model$learner$state$train_task$id), "ret12"
     )
   }, FUN.VALUE = character(1))
   
